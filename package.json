@@ -1,7 +1,15 @@
-.{
+{
   "private": true,
   "name": "zk-open-modules",
+  "devDependencies": {
+    "flow-bin": "^0.59.0",
+    "jest": "^21.2.1"
+  },
   "workspaces": [
-    "packages/*"
+    "common-js-utils",
+    "csv-parser",
+    "date-primitive-utils",
+    "question-map",
+    "swedish-ssn"
   ]
 }
