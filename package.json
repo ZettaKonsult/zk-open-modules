@@ -6,12 +6,5 @@
     "jest": "^21.2.1",
     "prettier": "^1.5.3"
   },
-  "workspaces": [
-    "common-js-utils",
-    "csv-parser",
-    "date-primitive-utils",
-    "question-map",
-    "swedish-ssn",
-    "rule-validator"
-  ]
+  "workspaces": ["packages/*"]
 }
