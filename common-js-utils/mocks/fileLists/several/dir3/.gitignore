@@ -1,0 +1,5 @@
+# Ignore everything in this directory.
+# An empty directory is required for testing.
+*
+# Except this file
+!.gitignore
