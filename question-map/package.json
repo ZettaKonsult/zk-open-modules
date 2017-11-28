@@ -1,0 +1,36 @@
+{
+  "name": "question-map",
+  "version": "1.0.0",
+  "description": "Data structure for management of a series of questions.",
+  "main": "src/index.js",
+  "scripts": {
+    "js-standard": "standard --fix",
+    "js-prettier": "prettier --write",
+    "test": "SET NODE_PATH=src && jest --color",
+    "test-watch": "SET NODE_PATH=src && jest --color --watch",
+    "travis-test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZettaKonsult/questionMap.git"
+  },
+  "keywords": [],
+  "author": "Zimon Kuhs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZettaKonsult/questionMap/issues"
+  },
+  "homepage": "https://github.com/ZettaKonsult/questionMap#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^20.0.4",
+    "pre-commit": "^1.2.2",
+    "prettier": "^1.5.3",
+    "standard": "^10.0.3"
+  },
+  "standard": {
+    "ignore": [
+      "*.spec*"
+    ]
+  }
+}
