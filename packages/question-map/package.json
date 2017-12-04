@@ -4,7 +4,7 @@
   "description": "Data structure for management of a series of questions.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZettaKonsult/questionMap.git"
+    "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
   },
   "main": "dist/index.js",
   "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",

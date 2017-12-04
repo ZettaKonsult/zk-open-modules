@@ -4,7 +4,7 @@
   "description": "General utility module for JavaScript.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ZettaKonsult/common-js-utils.git"
+    "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
   },
   "main": "dist/index.js",
   "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",

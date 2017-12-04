@@ -4,7 +4,7 @@
   "description": "Validates data against a set of defined rules.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZettaKonsult/zk-open-modules/rule-validator"
+    "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
   },
   "main": "dist/index.js",
   "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",
