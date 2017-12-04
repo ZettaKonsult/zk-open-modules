@@ -2,26 +2,50 @@
   "name": "rule-validator",
   "version": "1.0.0",
   "description": "Validates data against a set of defined rules.",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "jest src/* --watch"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-es2017-node7": "^0.5.2",
-    "jest": "^20.0.4",
-    "jest-cli": "^20.0.4",
-    "prettier": "^1.5.3"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/ZettaKonsult/zk-open-modules/rule-validator"
   },
-  "author": "Fredrik Palmquist, Zimon Kuhs",
-  "license": "ISC"
+  "main": "dist/index.js",
+  "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index",
+    "test": "jest --color",
+    "test:watch": "yarn run test --watch",
+    "build": "babel src -d dist",
+    "lint": "eslint src/**/*.js",
+    "travis:test": "jest",
+    "precommit": "lint-staged && yarn run test",
+    "prepublish": "yarn run build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.12.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --trailing-comma es5 --single-quote --no-semi --write",
+      "yarn run lint",
+      "git add"
+    ],
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  }
 }

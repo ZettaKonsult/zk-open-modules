@@ -2,57 +2,50 @@
   "name": "common-js-utils",
   "version": "1.5.0",
   "description": "General utility module for JavaScript.",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "babel src --out-dir dist",
-    "clean": "rimraf dist && mkdir dist",
-    "js-standard": "standard --fix",
-    "js-prettier": "prettier --write",
-    "test": "jest dist --color",
-    "test-clean": "npm run clean && npm run build && npm run test",
-    "test-watch": "jest dist --color --watch",
-    "travis-test": "npm run build && jest dist"
-  },
-  "pre-commit": [
-    "clean",
-    "js-standard",
-    "build",
-    "test"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZettaKonsult/common-js-utils.git"
   },
-  "keywords": [],
-  "author": "Fredrik Palmquist, Zimon Kuhs",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ZettaKonsult/common-js-utils/issues"
+  "main": "dist/index.js",
+  "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index",
+    "test": "jest --color",
+    "test:watch": "yarn run test --watch",
+    "build": "babel src -d dist",
+    "lint": "eslint src/**/*.js",
+    "travis:test": "jest",
+    "precommit": "lint-staged && yarn run test",
+    "prepublish": "yarn run build"
   },
-  "homepage": "https://github.com/ZettaKonsult/common-js-utils#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-es2017-node7": "^0.5.2",
-    "jest": "^20.0.4",
-    "jest-cli": "^21.2.1",
-    "pre-commit": "^1.2.2",
-    "prettier": "^1.7.2",
-    "serverless-webpack": "^3.1.2",
-    "standard": "^10.0.3",
-    "webpack": "^3.7.1",
-    "webpack-node-externals": "^1.6.0"
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.12.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
   },
-  "dependencies": {
-    "object-size": "^0.1.1"
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --trailing-comma es5 --single-quote --no-semi --write",
+      "yarn run lint",
+      "git add"
+    ],
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
   },
-  "standard": {
-    "ignore": [
-      "*.spec*"
-    ]
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }

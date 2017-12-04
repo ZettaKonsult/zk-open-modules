@@ -2,35 +2,50 @@
   "name": "question-map",
   "version": "1.0.0",
   "description": "Data structure for management of a series of questions.",
-  "main": "src/index.js",
-  "scripts": {
-    "js-standard": "standard --fix",
-    "js-prettier": "prettier --write",
-    "test": "SET NODE_PATH=src && jest --color",
-    "test-watch": "SET NODE_PATH=src && jest --color --watch",
-    "travis-test": "jest"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZettaKonsult/questionMap.git"
   },
-  "keywords": [],
-  "author": "Zimon Kuhs",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ZettaKonsult/questionMap/issues"
+  "main": "dist/index.js",
+  "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index",
+    "test": "jest --color",
+    "test:watch": "yarn run test --watch",
+    "build": "babel src -d dist",
+    "lint": "eslint src/**/*.js",
+    "travis:test": "jest",
+    "precommit": "lint-staged && yarn run test",
+    "prepublish": "yarn run build"
   },
-  "homepage": "https://github.com/ZettaKonsult/questionMap#readme",
-  "dependencies": {},
   "devDependencies": {
-    "jest": "^20.0.4",
-    "pre-commit": "^1.2.2",
-    "prettier": "^1.5.3",
-    "standard": "^10.0.3"
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.12.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
   },
-  "standard": {
-    "ignore": [
-      "*.spec*"
-    ]
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --trailing-comma es5 --single-quote --no-semi --write",
+      "yarn run lint",
+      "git add"
+    ],
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   }
 }
