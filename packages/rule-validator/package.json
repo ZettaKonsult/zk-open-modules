@@ -7,7 +7,8 @@
     "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
   },
   "main": "dist/index.js",
-  "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs",
+  "author":
+    "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs <zmk.zk.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "node src/index",

@@ -19,6 +19,10 @@
     "precommit": "lint-staged && yarn run test",
     "prepublish": "yarn run build"
   },
+  "dependencies": {
+    "common-js-utils": "^1.5.0",
+    "object-size": "^0.1.1"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.2",

@@ -1,8 +1,5 @@
 /**
- * Tests for csv-parser.
- *
  * @date  2017-08-11
- * @since 8.2.1
  */
 
 const { parseFile, parseLines, parseString } = require('./csv-parser')

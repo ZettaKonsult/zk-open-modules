@@ -1,2 +1,2 @@
 # common-js-utils
-General utility module for JavaScript.
+Utility module for JavaScript.

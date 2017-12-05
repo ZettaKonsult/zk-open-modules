@@ -1,8 +1,5 @@
 /**
- * Tests for the QuestionMap class.
- *
  * @date  2017-10-23
- * @since 8.4.0
  */
 
 const {QuestionMap, Question, NoSuchOption, NoSuchQuestion} =

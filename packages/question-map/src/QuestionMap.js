@@ -1,8 +1,5 @@
 /**
- * Class representing a map of questions to answer.
- *
  * @date  2017-10-23
- * @since 8.4.0
  */
 
 const {Question, NoSuchOption} = require('./Question')

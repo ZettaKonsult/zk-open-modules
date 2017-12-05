@@ -1,8 +1,5 @@
 /**
- * Tests for filePaths.
- *
  * @date  2017-09-28
- * @since 8.4.0
  */
 
 const objectSize = require('object-size')

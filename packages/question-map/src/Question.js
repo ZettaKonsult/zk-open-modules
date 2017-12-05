@@ -1,8 +1,5 @@
 /**
- * Class representing a question with a selection of answers.
- *
  * @date    2017-10-17
- * @since   8.4.0
  */
 
 class NoSuchOption extends Error {

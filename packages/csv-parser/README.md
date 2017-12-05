@@ -1,2 +1,2 @@
 # zk-csv-parser
-Module for parsing CSV files
+Utility for parsing CSV files

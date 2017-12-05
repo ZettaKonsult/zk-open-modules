@@ -1,8 +1,5 @@
 /**
- * Tests for the Question class.
- *
  * @date  2017-10-17
- * @since 8.4.0
  */
 
 const { NoSuchOption, Question } = require('./Question')

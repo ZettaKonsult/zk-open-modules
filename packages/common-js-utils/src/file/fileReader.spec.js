@@ -1,8 +1,5 @@
 /**
- * Tests for fileReader.
- *
  * @date  2017-08-03
- * @since 7.9.0
  */
 
 const { fileAsLines, fileAsString } = require('./fileReader')

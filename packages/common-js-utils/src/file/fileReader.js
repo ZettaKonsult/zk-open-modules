@@ -1,8 +1,5 @@
 /**
- * Utility module for file reading.
- *
  * @date  2017-08-03
- * @since 7.9.0
  */
 
 const fileSystem = require('fs')
