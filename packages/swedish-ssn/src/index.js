@@ -1,8 +1,8 @@
-import * as utils from './utils'
+import * as utils from "./utils"
 
-export { validateSwedishSsn } from './validator'
+export { validateSwedishSsn } from "./validator"
 export {
   calculateAge,
   calculateGender,
   transformToApprovedFormat
-} from './utils'
+} from "./utils"

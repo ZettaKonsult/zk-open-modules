@@ -6,10 +6,10 @@ import {
 } from "./"
 
 describe("Test validation", () => {
-  it("SSN for a man", () => {
+  it("SSN for a man.", () => {
     expect(validateSwedishSsn("910504-3690")).toBeTruthy()
   })
-  it("SSN for a woman", () => {
+  it("SSN for a woman.", () => {
     expect(validateSwedishSsn("910504-4128")).toBeTruthy()
   })
 })

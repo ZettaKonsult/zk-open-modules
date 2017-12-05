@@ -6,14 +6,14 @@
 # In order to test easily, change 'git show to git ls-tree'             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-source './util.sh'
-
 cd "`dirname $(readlink -f "$0")`/.."
 ROOT="$(pwd)"
 SCRIPTS="$ROOT/scripts"
+echo "Working from $ROOT."
 
-COMMIT=$(git rev-parse HEAD)
-echo "Latest commit: ${COMMIT}"
+source "$SCRIPTS/util.sh"
+
+echo "Latest commit: $(git rev-parse HEAD)"
 
 FILE_LIST=$(git show --name-only --pretty=format:)
 
@@ -25,7 +25,7 @@ for FILE_PATH in $FILE_LIST; do
         continue
     fi
 
-    contains "$DIRS" "$FILE_PATH"
+    contains "$DIRS" "$MODULE_DIR"
     if [ $? -eq 0 ]; then
       DIRS+="$MODULE_DIR "
     fi
