@@ -2,10 +2,11 @@
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Tests directories changed in the latest commit.                       #
-# Parameters                                                            #                                             #
-#                                                                       #
-# In order to test easily, change 'git diff-tree to git ls-tree'        #
+# Parameters                                                            #
+# In order to test easily, change 'git show to git ls-tree'             #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+source './util.sh'
 
 cd "`dirname $(readlink -f "$0")`/.."
 ROOT="$(pwd)"
@@ -24,7 +25,10 @@ for FILE_PATH in $FILE_LIST; do
         continue
     fi
 
-    DIRS+="$MODULE_DIR "
+    contains "$DIRS" "$FILE_PATH"
+    if [ $? -eq 0 ]; then
+      DIRS+="$MODULE_DIR "
+    fi
 done
 
 echo "Changed modules:"
