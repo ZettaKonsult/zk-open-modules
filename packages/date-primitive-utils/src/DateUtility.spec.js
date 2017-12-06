@@ -2,7 +2,7 @@ import * as util from "./DateUtility"
 
 describe("DateUtility", () => {
   describe("incrementDateBy()", () => {
-    it("increments date by the given number", () => {
+    it("Increments date by the given number", () => {
       const date = Date.UTC(2017, 0, 1)
       const expected = Date.UTC(2017, 0, 3)
 
@@ -149,9 +149,9 @@ describe("DateUtility", () => {
       })
     })
   })
-  
-  describe('toISODateString()', () => {
-    it('Returns the epox as a ISO date string', () => {
+
+  describe("toISODateString()", () => {
+    it("Returns the epox as a ISO date string", () => {
       const date = new Date(2017, 0, 1, 12)
       expect(util.toISODateString(date)).toMatch(/2017-01-01/)
     })
