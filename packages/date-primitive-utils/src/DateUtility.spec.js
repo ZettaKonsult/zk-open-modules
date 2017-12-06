@@ -25,7 +25,7 @@ describe("DateUtility", () => {
   })
 
   describe("findQuarter()", () => {
-    describe("test first quarter", () => {
+    describe("Test first quarter.", () => {
       it("january", () => {
         const date = new Date(2017, 0)
         expect(util.findQuarter(date)).toBe(1)
