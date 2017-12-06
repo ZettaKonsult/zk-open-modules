@@ -87,7 +87,7 @@ describe("DateUtility", () => {
   })
 
   describe("getLastMonthOfDivision", () => {
-    it("returns correct array for half year", () => {
+    it("Returns correct array for half year.", () => {
       expect(util.getLastMonthOfDivision(6)).toEqual(
         expect.arrayContaining([5, 11])
       )

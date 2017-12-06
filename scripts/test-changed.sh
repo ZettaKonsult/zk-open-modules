@@ -54,6 +54,7 @@ if [ "$1" != "publish" ]; then
   exit 0
 fi
 
+echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm adduser
 for DIR in $DIRS; do
     echo "==== Publishing `basename $DIR` ===="
     cd $DIR
