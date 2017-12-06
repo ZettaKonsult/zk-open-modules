@@ -47,4 +47,10 @@ for DIR in $DIRS; do
     fi
 done
 
+npm login
+for DIR in $DIRS; do
+    cd $DIR
+    npm publish
+done
+
 exit 0

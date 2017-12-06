@@ -1,4 +1,5 @@
 /* @flow */
+
 export const getMonthRange = (epoch: number) => {
   const date = new Date(epoch)
   return {
