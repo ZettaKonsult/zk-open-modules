@@ -70,7 +70,7 @@ describe("DateUtility", () => {
       })
     })
 
-    describe("fourth quarter", () => {
+    describe("Fourth quarter.", () => {
       it("october", () => {
         const date = new Date(2017, 9)
         expect(util.findQuarter(date)).toBe(4)
