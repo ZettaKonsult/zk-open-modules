@@ -2,7 +2,7 @@ import * as util from "./DateUtility"
 
 describe("DateUtility", () => {
   describe("incrementDateBy()", () => {
-    it("Increments date by the given number", () => {
+    it("Increments date by the given number.", () => {
       const date = Date.UTC(2017, 0, 1)
       const expected = Date.UTC(2017, 0, 3)
 
