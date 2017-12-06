@@ -38,7 +38,7 @@ done
 echo ""
 
 for DIR in $DIRS; do
-    if [ $1 == "publish" ]; then
+    if [ "$1" = "publish" ]; then
       break
     fi
     $SCRIPTS/test-one.sh $DIR
@@ -50,7 +50,7 @@ for DIR in $DIRS; do
     fi
 done
 
-if [ $1 != "publish" ]; then
+if [ "$1" != "publish" ]; then
   exit 0
 fi
 
