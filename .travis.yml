@@ -1,10 +1,8 @@
 language: node_js
 node_js:
 - lts/*
-script:
-- "./scripts/build.sh"
 deploy:
-  provider: npm
+  provider: lerna
   email: zettapublisher@gmail.com
   api_key:
     secure: cIxlCkPGyRsjz3ynGZ+9wR5Tf26cz7Sl0fsWwa637FnqLk8JY9wqDhQikbSV3xATbBAwtK/U0m7bb/VpruOYQHiS87cAMcXnOTJY1+ZsAVXvaepe9eeVzO0BWO4hpgVHlOlQ8NREqHITN66B19qK9h10QYU1dYi9gBF+kcVZlzn897X7dOTeeRa6E1OZMBcmk2tw1xa+TNk6CpCZ1HLRCVp/zqlkkp5Xf1Az78xr2sQuLyLStu8Z1z0Ns5CIExUNZ0DtSPmDRKMRlxhHJndSB5SBAQdxO9WpeabEeH0fMSwtxwhqfye0DC3anybENjvJqn9eqSEp/bAEf/721BVPGj/ekkaUL9zzZxbBzWTevUK/mzJIjx/3HhEJzqfzqug3cZgUE3NJbgfT5JeXEOpLdlqkpYnHPBzJiMMX+9Xpqpw2KIlMpvxORs6G5xILstDr7DehjqKMOfV394zvvEAbB/2aajPw1rHhFrU5vdnCYmt4d/YYY+jmv993M50mdd6R0SHUmIvwOrKWpbkJycn3kzwHuVRkWEkptxWA6o4GW8j2zxFC0RgUvYEUowYnLXvjVqFeiOtpliDgnpYyff6dAQ52vEc90PC+Z2Pcixx++7OFo1QS8co9MXVnti4tLzKqY8cGAQsSLELTZz/MLA1eUvVpiLfB/+Vcain3170W924=
@@ -20,6 +18,3 @@ before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH="$HOME/.yarn/bin:$PATH"
   - npm install -g jest
-  - ./scripts/goto_next.sh
-before_deploy:
-  - ./scripts/goto_next.sh

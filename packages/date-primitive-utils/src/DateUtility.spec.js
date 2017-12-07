@@ -92,7 +92,7 @@ describe("DateUtility", () => {
         expect.arrayContaining([5, 11])
       )
     })
-    it("returns correct array for year divided in 3", () => {
+    it("Returns correct array for year divided in 3.", () => {
       expect(util.getLastMonthOfDivision(4)).toEqual(
         expect.arrayContaining([3, 7, 11])
       )
