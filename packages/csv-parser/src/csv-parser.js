@@ -5,15 +5,20 @@
  * @since 7.9.0
  */
 
-const { fileAsLines } = require('common-js-utils')
+const { fileAsLines } = require("common-js-utils")
 
-const DEFAULT_DELIM = [ ',', ';' ]
+const DEFAULT_DELIM = [",", ";"]
 
-const parseLines = (lines, { delimiter = DEFAULT_DELIM,
-  skipFirst = 0,
-  skipLast = 0,
-  lineLimit = -1,
-  header = [] } = {}) => {
+const parseLines = (
+  lines,
+  {
+    delimiter = DEFAULT_DELIM,
+    skipFirst = 0,
+    skipLast = 0,
+    lineLimit = -1,
+    header = []
+  } = {}
+) => {
   let linesToRead = lineLimit >= 0 ? lineLimit : lines.length
   let cells = []
 
@@ -24,7 +29,10 @@ const parseLines = (lines, { delimiter = DEFAULT_DELIM,
     cells.push(header)
   }
 
-  const lastLine = Math.min(lines.length - ignoreLast, linesToRead + ignoreFirst)
+  const lastLine = Math.min(
+    lines.length - ignoreLast,
+    linesToRead + ignoreFirst
+  )
   const regexp = delimiterString(delimiter)
 
   for (let i = ignoreFirst; i < lastLine; ++i) {
@@ -45,21 +53,21 @@ const parseFile = async (filePath, options) => {
 /**
  * Create a regular expression for delimiting on one or more characters.
  */
-const delimiterString = (delimiters) => {
-  let string = ''
+const delimiterString = delimiters => {
+  let string = ""
 
   if (Array.isArray(delimiters)) {
-    let prefix = ''
+    let prefix = ""
 
     for (let delim of delimiters) {
       string += prefix + delim
-      prefix = '|'
+      prefix = "|"
     }
   } else {
     string = delimiters
   }
 
-  return new RegExp('\\s*[' + string + ']\\s*')
+  return new RegExp("\\s*[" + string + "]\\s*")
 }
 
 module.exports = {
