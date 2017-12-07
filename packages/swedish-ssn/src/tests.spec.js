@@ -29,7 +29,7 @@ describe("Test transform.", () => {
   })
 })
 
-describe("Test age calculation", () => {
+describe("Test age calculation.", () => {
   it("Should return current year - 1991", () => {
     const d = new Date()
     const expected = (d.getFullYear() - 1991).toString()
