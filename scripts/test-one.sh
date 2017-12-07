@@ -14,5 +14,5 @@ fi
 
 cd "$TEST_DIR"
 echo "==== Testing directory '$TEST_DIR'. ===="
-yarn install && yarn travis:test
+yarn travis:test
 exit $?

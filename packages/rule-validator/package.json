@@ -7,8 +7,7 @@
     "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
   },
   "main": "dist/index.js",
-  "author":
-    "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs <zmk.zk.dev@gmail.com>",
+  "author": "Fredrik Palmquist <fiddep@telia.com>, Zimon Kuhs <zmk.zk.dev@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "node src/index",
@@ -22,6 +21,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
@@ -32,6 +32,7 @@
     "flow-bin": "^0.59.0",
     "husky": "^0.14.3",
     "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
     "lint-staged": "^5.0.0",
     "prettier": "^1.8.2"
   },
@@ -41,8 +42,13 @@
       "yarn run lint",
       "git add"
     ],
-    "*.json": ["prettier --write", "git add"],
-    "yarn.lock": ["git rm --cached"]
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ],
+    "yarn.lock": [
+      "git rm --cached"
+    ]
   },
   "jest": {
     "transform": {
