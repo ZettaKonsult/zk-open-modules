@@ -38,9 +38,6 @@ done
 echo ""
 
 for DIR in $DIRS; do
-    if [ "$1" = "publish" ]; then
-      break
-    fi
     $SCRIPTS/test-one.sh $DIR
 
     rc=$?
@@ -48,17 +45,6 @@ for DIR in $DIRS; do
         echo "Test failed with exit code $rc."
         exit $rc
     fi
-done
-
-if [ "$1" != "publish" ]; then
-  exit 0
-fi
-
-echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm adduser
-for DIR in $DIRS; do
-    echo "==== Publishing `basename $DIR` ===="
-    cd $DIR
-    npm publish
 done
 
 exit 0

@@ -2,7 +2,7 @@ import * as dateRange from './DateRange'
 
 describe('DateRange', () => {
   describe('getMonthRange()', () => {
-    it('returns start and end of month for given epoch', () => {
+    it('Returns start and end of month for given epoch.', () => {
       const date = Date.UTC(2017, 1, 5)
       const expected = {
         start: Date.UTC(2017, 1, 1),
