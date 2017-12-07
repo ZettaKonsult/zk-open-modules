@@ -1231,6 +1231,12 @@ commander@^2.11.0, commander@^2.9.0:
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.12.2.tgz#0f5946c427ed9ec0d91a46bb9def53e54650e555"
 
+common-js-utils@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/common-js-utils/-/common-js-utils-1.6.0.tgz#7039fda587f43e93de0881963fefccc171c80d6c"
+  dependencies:
+    object-size "^0.1.1"
+
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"

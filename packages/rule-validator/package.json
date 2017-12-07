@@ -1,6 +1,6 @@
 {
-  "name": "rule-validator",
-  "version": "1.1.0",
+  "name": "zk-rule-validator",
+  "version": "1.0.2",
   "description": "Validates data against a set of defined rules.",
   "repository": {
     "type": "git",

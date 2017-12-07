@@ -1,6 +1,6 @@
 {
   "name": "common-js-utils",
-  "version": "1.6.0",
+  "version": "1.5.1",
   "description": "General utility module for JavaScript.",
   "repository": {
     "type": "git",
