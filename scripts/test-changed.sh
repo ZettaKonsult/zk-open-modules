@@ -19,15 +19,14 @@ FILE_LIST=$(git show --name-only --pretty=format:)
 for FILE_PATH in $FILE_LIST; do
 
     MODULE_DIR="packages/$(echo "`dirname $FILE_PATH`" | cut -d "/" -f2)"
-    echo "Checking if $MODULE_DIR is a package."
+
     if [ ! -d $MODULE_DIR ] || [ ! -f "$MODULE_DIR/package.json" ]; then
-        echo "    It was not."
         continue
     fi
 
-    echo "    It was."
     contains "$DIRS" "$MODULE_DIR"
     if [ $? -eq 0 ]; then
+      echo "    Module $MODULE_DIR was changed."
       DIRS+="$MODULE_DIR "
     fi
 done

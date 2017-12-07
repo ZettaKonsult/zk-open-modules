@@ -1,1 +1,1 @@
-export { default } from 'ruleValidator'
+export { default } from "ruleValidator"

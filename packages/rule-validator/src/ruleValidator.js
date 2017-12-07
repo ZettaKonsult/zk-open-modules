@@ -17,7 +17,7 @@ export default (rules, values) => {
 const checkValues = (value, rules) => {
   for (let key of Object.keys(rules)) {
     let message = rules[key](value)
-    if (typeof message === 'string' || !message) {
+    if (typeof message === "string" || !message) {
       return message
     }
   }
@@ -25,8 +25,8 @@ const checkValues = (value, rules) => {
 }
 
 const valuesForEveryKeyExists = (keys, values) => {
-  if (typeof values === 'undefined') {
-    throw new Error('No values defined.')
+  if (typeof values === "undefined") {
+    throw new Error("No values defined.")
   }
 
   keys.map(key => {
@@ -40,7 +40,7 @@ const valuesForEveryKeyExists = (keys, values) => {
 const checkNonempty = rules =>
   Object.keys(rules).map(key => {
     let array = rules[key]
-    if (typeof array === 'undefined' || array.length <= 0) {
+    if (typeof array === "undefined" || array.length <= 0) {
       throw new Error(`Expected non-empty rules array for key ${key}.`)
     }
   })
