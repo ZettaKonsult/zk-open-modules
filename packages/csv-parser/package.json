@@ -1,6 +1,6 @@
 {
   "name": "zk-csv-parser",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "description": "Module for parsing CSV files",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "prepublish": "yarn run build"
   },
   "dependencies": {
-    "common-js-utils": "^1.5.0",
+    "common-js-utils": "^1.6.0",
     "object-size": "^0.1.1"
   },
   "devDependencies": {
