@@ -1,8 +1,8 @@
-import * as dateRange from './DateRange'
+import * as dateRange from "./DateRange"
 
-describe('DateRange', () => {
-  describe('getMonthRange()', () => {
-    it('Returns start and end of month for given epoch.', () => {
+describe("DateRange", () => {
+  describe("getMonthRange()", () => {
+    it("Returns start and end of month for given epoch.", () => {
       const date = Date.UTC(2017, 1, 5)
       const expected = {
         start: Date.UTC(2017, 1, 1),
@@ -12,8 +12,8 @@ describe('DateRange', () => {
     })
   })
 
-  describe('getYearRange()', () => {
-    it('returns start and end of year for given epoch', () => {
+  describe("getYearRange()", () => {
+    it("Returns start and end of year for given epoch.", () => {
       const date = Date.UTC(2017, 1, 5)
       const expected = {
         start: Date.UTC(2017, 0, 1),

@@ -15,7 +15,7 @@ describe('Tests csv-parser.js.', () => {
         expect(line.length).toBe(6)
       }
     })
-    it('First and last line,', async () => {
+    it('First and last line.', async () => {
       const cells = await parseFile('mocks/sample.csv')
       expect(cells[0]).toEqual(['id', 'first_name', 'last_name', 'email',
         'gender', 'ip_address'])

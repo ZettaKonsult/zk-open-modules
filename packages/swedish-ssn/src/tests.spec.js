@@ -14,7 +14,7 @@ describe("Test validation", () => {
   })
 })
 
-describe("Test transform", () => {
+describe("Test transform.", () => {
   it("Without hyphen-minus", () => {
     expect(transformToApprovedFormat("9105043690")).toEqual("910504-3690")
   })

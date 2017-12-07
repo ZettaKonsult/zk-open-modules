@@ -43,21 +43,21 @@ describe('NumberMap.', () => {
       })
       it('Non-numerical value.', () => {
         const map = new NumberMap({'one': 1, 'two': 2})
-    
+
         try {
             map.add('one', '1')
             fail("No error was thrown.")
         } catch (error) {
             expect(error).toEqual(
                 new TypeError('Can not add non-numerical values to a Number Map. ' +
-                  `Got 1 (string).`)            
+                  `Got 1 (string).`)
             )
         }
       })
   })
   describe('Combining.', () => {
     describe('Correctly', () => {
-      it('Using object.', () => {
+      it('Using an object.', () => {
         const map = new NumberMap({'one': 1, 'two': 2})
         map.addAll({'two': 2, 'three': 3})
 
@@ -86,7 +86,7 @@ describe('NumberMap.', () => {
       } catch (error) {
           expect(error).toEqual(
               new TypeError('NumberMap.join() should only be used ' +
-                  'with other NumberMaps.')           
+                  'with other NumberMaps.')
           )
       }
       })
@@ -99,7 +99,7 @@ describe('NumberMap.', () => {
       } catch (error) {
           expect(error).toEqual(
               new TypeError('NumberMap.addAll() should not be used ' +
-                  'with NumberMaps.')          
+                  'with NumberMaps.')
           )
       }
       })
