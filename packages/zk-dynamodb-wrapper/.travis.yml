@@ -1,0 +1,12 @@
+language: node_js
+
+node_js:
+  - lts/*
+
+script:
+  - yarn travis-test
+
+cache:
+  yarn: true
+  directories:
+    - node_modules

@@ -1,0 +1,58 @@
+{
+  "name": "zk-dynamodb-wrapper",
+  "version": "1.0.3",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ZettaKonsult/zk-open-modules.git"
+  },
+  "main": "dist/index.js",
+  "author": "Fredrik Palmquist <fiddep@telia.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index",
+    "test": "jest --color",
+    "test:watch": "yarn run test --watch",
+    "build": "babel src -d dist",
+    "lint": "eslint src/**/*.js",
+    "travis:test": "jest",
+    "precommit": "lint-staged && yarn run test",
+    "prepublish": "yarn run build",
+    "postpublish": "rm -rf /dist"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.169.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.12.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --trailing-comma es5 --single-quote --no-semi --write",
+      "yarn run lint",
+      "git add"
+    ],
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  }
+}
