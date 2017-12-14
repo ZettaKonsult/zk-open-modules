@@ -17,7 +17,9 @@ or
 ```javascript
 import initDatabase from ('zk-dynamodb-wrapper')
 
-const database = initDatabase({region: 'AWS-DATABASE-REGION'})
+const database = initDatabase({region: 'AWS-DATABASE-REGION', auth: function})
+
+auth: function that is run before each database call
 
 database.create({TableName: String, Item: {key: value}})
 database.update({TableName: String, Key: {key: value}, Values: {key: value}})
