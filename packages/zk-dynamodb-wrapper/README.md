@@ -3,35 +3,25 @@
 ## Installation
 
 ```
-  npm install --save swedish-ssn
+  npm install --save zk-dynamodb-wrapper
 ```
 
 or
 
 ```
-  yarn add swedish-ssn
+  yarn add zk-dynamodb-wrapper
 ```
 
 ## Usage
 
 ```javascript
-var ssn = require("swedish-ssn")
-var personSsn = "9105041835"
+import initDatabase from ('zk-dynamodb-wrapper')
 
-ssn.validateSwedishSsn(personSsn) // Returns true.
-ssn.calculateAge(personSsn) // Returns current year - 1991.
-ssn.calculateGender(personSsn) // Returns man.
-ssn.transformToApprovedFormat(personSsn) // Returns format YYMMDD-XXXX.
-```
+const database = initDatabase({region: 'AWS-DATABASE-REGION'})
 
-##Usable Formats
-
-```
-YYYYMMDD-XXXX
-YYYYMMDD+XXXX
-YYYYMMDDXXXX
-
-YYMMDD-XXXX
-YYMMDD+XXXX
-YYMMDDXXXX
+database.create({TableName: String, Item: {key: value}})
+database.update({TableName: String, Key: {key: value}, Values: {key: value}})
+database.get({TableName: String, Key: {key, value}})
+database.list({TableName: String, Values: {key, value}})
+database.remove({TableName: String, Key: {key, value}})
 ```
