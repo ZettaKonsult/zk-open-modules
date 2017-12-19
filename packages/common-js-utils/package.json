@@ -1,6 +1,6 @@
 {
   "name": "common-js-utils",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "General utility module for JavaScript.",
   "repository": {
     "type": "git",
@@ -45,13 +45,8 @@
       "yarn run lint",
       "git add"
     ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "yarn.lock": [
-      "git rm --cached"
-    ]
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
   },
   "jest": {
     "transform": {

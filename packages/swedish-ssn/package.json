@@ -1,6 +1,6 @@
 {
   "name": "swedish-ssn",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "repository": {
     "type": "git",
@@ -42,13 +42,8 @@
       "yarn run lint",
       "git add"
     ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "yarn.lock": [
-      "git rm --cached"
-    ]
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
   },
   "jest": {
     "transform": {

@@ -1,6 +1,6 @@
 {
   "name": "question-map",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Data structure for management of a series of questions.",
   "repository": {
     "type": "git",
@@ -42,13 +42,8 @@
       "yarn run lint",
       "git add"
     ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "yarn.lock": [
-      "git rm --cached"
-    ]
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
   },
   "jest": {
     "transform": {
