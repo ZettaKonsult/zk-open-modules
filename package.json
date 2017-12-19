@@ -11,7 +11,9 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src/**/*.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "publish": "lerna publish",
+    "updated": "lerna updated"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -38,29 +40,20 @@
     "prettier": "^1.8.2",
     "standard": "^10.0.3"
   },
-  "pre-commit": [
-    "precommit"
-  ],
+  "pre-commit": ["precommit"],
   "lint-staged": {
     "*.{js}": [
       "prettier --trailing-comma es5 --single-quote --no-semi --write",
       "yarn run lint",
       "git add"
     ],
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "yarn.lock": [
-      "git rm --cached"
-    ]
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
   },
   "jest": {
     "transform": {
       "^.+\\.jsx?$": "babel-jest"
     }
   },
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": ["packages/*"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "zk-dynamodb-wrapper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -17,8 +17,9 @@
     "lint": "eslint src/**/*.js",
     "travis:test": "jest",
     "precommit": "lint-staged && yarn run test",
-    "prepublish": "yarn run build",
-    "postpublish": "rm -rf /dist"
+    "prepublishOnly": "yarn run build",
+    "publish": "npm publish",
+    "postpublishOnly": "rm -rf /dist"
   },
   "dependencies": {
     "aws-sdk": "^2.169.0"
