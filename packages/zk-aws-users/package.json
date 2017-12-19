@@ -1,0 +1,74 @@
+{
+  "name": "zk-authentication",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "author": "Zimon Kuhs <zmk.zk.dev@gmail.com>",
+  "scripts": {
+    "start": "node src/index",
+    "test": "jest src --color",
+    "test:watch": "yarn run test --watch",
+    "build": "babel src -d dist",
+    "lint": "eslint src/**/*.js",
+    "travis:test": "jest src",
+    "prepublish": "yarn run build",
+    "postpublish": "rm -rf /dist",
+    "precommit": "lint-staged && yarn run test",
+    "test:assign": "jest assignUser",
+    "test:login": "jest loginUser",
+    "test:group": "jest createGroup",
+    "test:pool": "jest createPool",
+    "test:role": "jest createRole",
+    "test:user": "jest createUser",
+    "test:integration": "yarn test:pool && yarn test:user && yarn test:role",
+    "update": "yarn test && yarn build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^4.12.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-react-app": "^2.0.1",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-react": "^7.5.1",
+    "flow-bin": "^0.61.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "jest-cli": "^21.2.1",
+    "lint-staged": "^6.0.0",
+    "prettier": "^1.8.2",
+    "serverless-webpack": "^3.1.0",
+    "source-map-support": "^0.4.18",
+    "webpack": "^3.6.0",
+    "webpack-node-externals": "^1.6.0"
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --trailing-comma es5 --single-quote --no-semi --write",
+      "yarn run lint",
+      "git add"
+    ],
+    "*.json": ["prettier --write", "git add"],
+    "yarn.lock": ["git rm --cached"]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
+  "dependencies": {
+    "amazon-cognito-identity-js": "^1.28.0",
+    "aws-sdk": "^2.166.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
+    "flow": "^0.2.3"
+  }
+}

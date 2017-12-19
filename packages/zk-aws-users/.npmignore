@@ -1,0 +1,3 @@
+# src folder ignored, so that the dist folder will be pushed instead to npm
+src
+**/*.spec.js
