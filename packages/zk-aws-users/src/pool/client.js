@@ -6,10 +6,18 @@
 
 import type { Pool } from '../'
 import AWS from 'aws-sdk'
+import { Settings } from '../'
 import { userPoolId, clientName, poolName } from '.'
 import { clientConfiguration } from './config'
+
 AWS.config.region = 'eu-central-1'
-const AWSCognito = new AWS.CognitoIdentityServiceProvider()
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: Settings.Identity.PoolId,
+  RoleArn: Settings.Identity.Arn.Unauthorized,
+  AccountId: Settings.AccountId
+})
+
+let cognito
 
 export const createClient = async (names: Pool) => {
   const pool = poolName(names)
@@ -18,9 +26,11 @@ export const createClient = async (names: Pool) => {
 
   try {
     const poolId = await userPoolId(names)
-    const result = await AWSCognito.createUserPoolClient(
-      clientConfiguration({ client: client, pool: poolId })
-    ).promise()
+    const result = await (await getCognito())
+      .createUserPoolClient(
+        clientConfiguration({ client: client, pool: poolId })
+      )
+      .promise()
     const clientId = result.UserPoolClient.ClientId
 
     console.log(
@@ -46,6 +56,7 @@ export const clientId = async (names: Pool): Promise<string> => {
 }
 
 export const listClients = async (userPoolId: string): { [string]: string } => {
+  console.log(`Listing clients for ${userPoolId}.`)
   let params = {
     UserPoolId: `${userPoolId}`,
     MaxResults: 50
@@ -56,8 +67,9 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
 
   do {
     try {
-      result = (await AWSCognito.listUserPoolClients(params).promise())
-        .UserPoolClients
+      result = (await (await getCognito())
+        .listUserPoolClients(params)
+        .promise()).UserPoolClients
     } catch (exception) {
       console.error(exception)
       return []
@@ -75,4 +87,11 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
   } while (result.nextToken)
 
   return clients
+}
+
+const getCognito = async () => {
+  if (cognito == null) {
+    cognito = new AWS.CognitoIdentityServiceProvider()
+  }
+  return cognito
 }

@@ -12,8 +12,15 @@ import { poolName } from '.'
 import { Account } from '../'
 import { assignUserToGroup, createAdminGroup } from './group'
 import * as Config from './config'
+
 AWS.config.region = Settings.Region
-const AWSCognito = new AWS.CognitoIdentityServiceProvider()
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: Settings.Identity.PoolId,
+  RoleArn: Settings.Identity.Arn.Unauthorized,
+  AccountId: Settings.AccountId
+})
+
+let cognito
 
 export const createUserPool = async (
   names: Pool,
@@ -46,9 +53,9 @@ const createPool = async (names: Pool, replyEmail: string): Promise<string> => {
   }
 
   try {
-    await AWSCognito.createUserPool(
-      Config.poolConfiguration(name, name, replyEmail)
-    ).promise()
+    await (await getCognito())
+      .createUserPool(Config.poolConfiguration(name, name, replyEmail))
+      .promise()
   } catch (exception) {
     console.error(exception)
     throw exception
@@ -62,9 +69,11 @@ export const deleteUserPool = async (names: {
   customer: string,
   project: string
 }) =>
-  await AWSCognito.deleteUserPool({
-    UserPoolId: poolName(names)
-  }).promise()
+  await (await getCognito())
+    .deleteUserPool({
+      UserPoolId: poolName(names)
+    })
+    .promise()
 
 export const userPoolExists = async (names: {
   customer: string,
@@ -93,7 +102,8 @@ export const listPools = async (): { [string]: string } => {
 
   do {
     try {
-      result = (await AWSCognito.listUserPools(params).promise()).UserPools
+      result = (await (await getCognito()).listUserPools(params).promise())
+        .UserPools
     } catch (exception) {
       console.error(exception)
       return
@@ -111,4 +121,11 @@ export const listPools = async (): { [string]: string } => {
   } while (result.nextToken)
 
   return pools
+}
+
+const getCognito = async () => {
+  if (cognito == null) {
+    cognito = new AWS.CognitoIdentityServiceProvider()
+  }
+  return cognito
 }

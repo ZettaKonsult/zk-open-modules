@@ -23,11 +23,18 @@ export const userHandler = async (
   userName: string,
   password: string
 ): Promise<UserHandler> => {
-  const pool = new CognitoUserPool({
-    UserPoolId: await UserPool.userPoolId(names),
-    ClientId: await UserPool.clientId(names)
-  })
+  let params
+  try {
+    params = {
+      UserPoolId: await UserPool.userPoolId(names),
+      ClientId: await UserPool.clientId(names)
+    }
+  } catch (exception) {
+    console.error(exception)
+    return
+  }
 
+  const pool = new CognitoUserPool(params)
   return {
     pool: pool,
     user: new CognitoUser({

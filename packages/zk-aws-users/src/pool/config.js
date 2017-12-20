@@ -6,7 +6,7 @@
 import type { Attribute } from './'
 import { requiredAttributes } from '../config'
 
-const SEP = `_`
+const SEP = `-`
 
 export const poolName = (names: {
   project: string,

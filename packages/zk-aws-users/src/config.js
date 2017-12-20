@@ -8,6 +8,7 @@ export const requiredAttributes = (): Array<string> => [
 ]
 
 export const Settings = {
+  AccountId: 0,
   Groups: {
     Administrator: {
       Name: 'Administrator',
@@ -15,6 +16,12 @@ export const Settings = {
     }
   },
   Id: String(process.env.AWS_ACCESS_KEY_ID),
+  Identity: {
+    Arn: {
+      Unauthorized: ''
+    },
+    PoolId: ''
+  },
   Policy: {
     Version: '2012-10-17'
   },
@@ -22,4 +29,14 @@ export const Settings = {
   Session: {
     ExpireTime: 60000
   }
+}
+
+export const setIdentity = (
+  accountId: number,
+  poolId: string,
+  unauthorizedArn: string
+) => {
+  Settings.AccountId = accountId
+  Settings.Identity.PoolId = poolId
+  Settings.Identity.Arn.Unauthorized = unauthorizedArn
 }

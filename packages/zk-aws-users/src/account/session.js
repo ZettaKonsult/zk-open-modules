@@ -13,6 +13,7 @@ import {
   failedLogin,
   successfulLogin
 } from './login'
+import util from 'util'
 import { UserPool } from '../'
 import { userHandler } from './user'
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js'
