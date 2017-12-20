@@ -9,10 +9,11 @@ import type { Pool } from '../'
 import { Settings } from '../'
 import { adminConfig, policyConfig } from './config'
 import { UserPool } from '../'
-import util from 'util'
 import AWS from 'aws-sdk'
+
 AWS.config.region = Settings.Region
-const IAM = new AWS.IAM()
+
+let IAM
 
 export const createAdminRole = async (names: Pool) => {
   const config = adminConfig()
@@ -27,10 +28,12 @@ const attachPolicy = async (roleName: string, policyArn: string) => {
   console.log(`Attaching policy ${policyArn} to the role ${roleName}.`)
 
   try {
-    await IAM.attachRolePolicy({
-      PolicyArn: policyArn,
-      RoleName: roleName
-    }).promise()
+    await (await getIAM())
+      .attachRolePolicy({
+        PolicyArn: policyArn,
+        RoleName: roleName
+      })
+      .promise()
     console.log(
       `Successfully attached policy ${policyArn} to the role ${roleName}.`
     )
@@ -83,7 +86,7 @@ export const createRole = async (
     }
 
     console.log(`Creating role ${roleName}.`)
-    const result = await IAM.createRole(params).promise()
+    const result = await (await getIAM()).createRole(params).promise()
     console.log(`Successfully created role ${roleName}.`)
 
     return {
@@ -115,7 +118,7 @@ export const createPolicy = async (
   console.log(`Creating policy ${params.PolicyName}.`)
 
   try {
-    const result = await IAM.createPolicy(params).promise()
+    const result = await (await getIAM()).createPolicy(params).promise()
 
     const policyArn = result.Policy.Arn
     const policyName = result.Policy.PolicyName
@@ -129,4 +132,11 @@ export const createPolicy = async (
     console.error(exception)
     return {}
   }
+}
+
+const getIAM = async (): AWS.IAM => {
+  if (IAM == null) {
+    IAM = new AWS.IAM()
+  }
+  return IAM
 }
