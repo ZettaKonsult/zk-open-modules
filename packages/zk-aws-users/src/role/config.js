@@ -4,8 +4,20 @@
  * 2017-12-18
  */
 
+import type { Pool } from '../'
 import type { Policy, RolePolicy, RoleStatement } from './types'
 import { Settings } from '../'
+
+const SEP = Settings.Separator
+
+export const pathPrefix = (names: Pool): string =>
+  `/${names.project}/${names.customer}/`
+
+export const policyName = (names: Pool, suffix: string = ''): string =>
+  `${names.project}${SEP}${names.customer}${SEP}${suffix}`
+
+export const roleName = (names: Pool, suffix: string = ''): string =>
+  `${names.project}${SEP}${names.customer}${SEP}${suffix}`
 
 export const adminConfig = (): {
   name: string,

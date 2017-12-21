@@ -4,12 +4,19 @@
  */
 
 export type { Attribute } from './types'
-export { clientName, poolName } from './config'
+export {
+  clientName,
+  domainName,
+  poolName,
+  clientConfiguration,
+  poolConfiguration
+} from './config'
 export { createClient, clientId } from './client'
-export { clientConfiguration, poolConfiguration } from './config'
 export { assignUserToGroup, createGroup } from './group'
 export {
   createUserPool,
+  createDomain,
+  deleteDomain,
   deleteUserPool,
   userPoolId,
   listPools

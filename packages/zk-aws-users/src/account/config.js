@@ -5,7 +5,7 @@
  */
 
 import type { AdminCreateData, SignUpData } from './'
-import { Settings, requiredAttributes } from '../config'
+import { Settings, requiredAttributes } from '../settings'
 
 type UserAttribute = {
   Name: string,

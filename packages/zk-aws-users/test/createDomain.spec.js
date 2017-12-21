@@ -6,20 +6,13 @@
  * Use to manually test creation of an user account.
  */
 
-import { Account } from '../src'
+import { UserPool } from '../src'
 import { setupIdentity, TestParameters } from './testUtil'
-import util from 'util'
 
-test('Test login of user.', async () => {
+test('Creating domain.', async () => {
   await setupIdentity()
-  const pool = {
+  await UserPool.createDomain({
     customer: TestParameters.CustomerName,
     project: TestParameters.ProjectName
-  }
-
-  const token = await Account.loginUser(
-    pool,
-    TestParameters.AdminUser,
-    TestParameters.Password
-  )
+  })
 })

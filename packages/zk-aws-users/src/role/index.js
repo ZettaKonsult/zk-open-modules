@@ -5,4 +5,10 @@
  */
 
 export type { Policy, RolePolicy, Statement } from './types'
-export { createRole, createAdminRole } from './crud'
+export {
+  createPolicy,
+  deletePolicy,
+  getPolicyArn,
+  listPolicies
+} from './policy'
+export { createRole, createAdminRole, deleteRole, getRoleArn } from './role'

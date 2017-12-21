@@ -7,7 +7,7 @@ export type {
   LoginObject,
   LoginObjectFromUser
 } from './types.js'
-export { createAdminUser, createUser, signUp } from './account'
+export { createAdminUser, createUser, signUp, signUpAdminUser } from './account'
 export {} from './login'
 export {
   currentUser,

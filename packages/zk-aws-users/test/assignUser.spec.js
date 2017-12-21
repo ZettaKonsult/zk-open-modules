@@ -7,32 +7,16 @@
  */
 
 import { UserPool } from '../src'
-import util from 'util'
-import AWS from 'aws-sdk'
-AWS.config.region = 'eu-central-1'
+import { setupIdentity, TestParameters } from './testUtil'
 
-const CUSTOMER = 'TestCustomer'
-const GROUP_NAME = 'Administrator'
-const USER_NAME = 'Administrator'
-const PROJECT = 'TestProject'
-
-console.log(
-  `Test parameters: ` +
-    `\ncustomer: ${CUSTOMER}, ` +
-    `\nproject: ${PROJECT}` +
-    `\nname: ${USER_NAME}` +
-    `\ngroup name: ${GROUP_NAME}, `
-)
-
-describe('Integration tests.', () => {
-  it('Create account.', async () => {
-    await UserPool.assignUserToGroup(
-      {
-        customer: CUSTOMER,
-        project: PROJECT
-      },
-      GROUP_NAME,
-      USER_NAME
-    )
-  })
+test('Integration tests.', async () => {
+  await setupIdentity()
+  await UserPool.assignUserToGroup(
+    {
+      customer: TestParameters.CustomerName,
+      project: TestParameters.ProjectName
+    },
+    TestParameters.AdminGroup,
+    TestParameters.AdminUser
+  )
 })

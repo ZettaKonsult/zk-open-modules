@@ -7,32 +7,21 @@
  */
 
 import { UserPool } from '../src'
+import { setupIdentity, TestParameters } from './testUtil'
 
-const CUSTOMER = 'TestCustomer'
-const EMAIL = 'zmk.zk.dev@gmail.com'
-const PROJECT = 'TestProject'
-
-console.log(
-  `Test parameters: ` +
-    `customer: ${CUSTOMER}, ` +
-    `email: ${EMAIL}, ` +
-    `project: ${PROJECT}`
-)
-
-describe('Integration tests.', () => {
-  it('Create pool.', () => {
-    UserPool.createUserPool(
-      {
-        customer: `${CUSTOMER}`,
-        project: `${PROJECT}`
-      },
-      EMAIL,
-      {
-        family_name: 'Kuhs',
-        given_name: 'Zimon',
-        birthdate: '9006211537',
-        email: EMAIL
-      }
-    )
-  })
+test('Creating pool.', async () => {
+  await setupIdentity()
+  await UserPool.createUserPool(
+    {
+      customer: `${TestParameters.CustomerName}`,
+      project: `${TestParameters.ProjectName}`
+    },
+    TestParameters.Email,
+    {
+      family_name: 'FamilyName',
+      given_name: 'GivenName',
+      birthdate: '0001011111',
+      email: TestParameters.Email
+    }
+  )
 })

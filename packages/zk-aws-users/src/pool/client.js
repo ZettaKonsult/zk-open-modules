@@ -9,6 +9,7 @@ import AWS from 'aws-sdk'
 import { Settings } from '../'
 import { userPoolId, clientName, poolName } from '.'
 import { clientConfiguration } from './config'
+import { getCognito } from '../config'
 
 AWS.config.region = 'eu-central-1'
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -19,13 +20,19 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 let cognito
 
-export const createClient = async (names: Pool) => {
+export const createClient = async (names: Pool): Promise<string> => {
   const pool = poolName(names)
   const client = clientName(names)
   console.log(`Creating application client ${client} for pool ${pool}.`)
 
   try {
     const poolId = await userPoolId(names)
+
+    if (await clientExists(names)) {
+      console.log(`Application client already exists.`)
+      return ''
+    }
+
     const result = await (await getCognito())
       .createUserPoolClient(
         clientConfiguration({ client: client, pool: poolId })
@@ -36,11 +43,15 @@ export const createClient = async (names: Pool) => {
     console.log(
       `Successfully created client ${client} (${clientId}) for pool ${pool} (${poolId}).`
     )
+    return clientId
   } catch (exception) {
     console.error(exception)
-    return
+    return ''
   }
 }
+
+export const clientExists = async (names: Pool): Promise<boolean> =>
+  (await clientId(names)) != null
 
 export const clientId = async (names: Pool): Promise<string> => {
   try {
@@ -56,14 +67,13 @@ export const clientId = async (names: Pool): Promise<string> => {
 }
 
 export const listClients = async (userPoolId: string): { [string]: string } => {
-  console.log(`Listing clients for ${userPoolId}.`)
   let params = {
     UserPoolId: `${userPoolId}`,
     MaxResults: 50
   }
 
   let clients = {}
-  let result = undefined
+  let result
 
   do {
     try {
@@ -87,11 +97,4 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
   } while (result.nextToken)
 
   return clients
-}
-
-const getCognito = async () => {
-  if (cognito == null) {
-    cognito = new AWS.CognitoIdentityServiceProvider()
-  }
-  return cognito
 }

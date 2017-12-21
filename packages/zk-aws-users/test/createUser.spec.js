@@ -7,43 +7,22 @@
  */
 
 import { Account } from '../src'
-import util from 'util'
-import AWS from 'aws-sdk'
-AWS.config.region = 'eu-central-1'
+import { setupIdentity, TestParameters } from './testUtil'
 
-const CUSTOMER = 'TestCustomer'
-const EMAIL = 'zmk.zk.dev@gmail.com'
-const PASSWORD = 'Passw0rdPassw0rd'
-const USER_NAME = 'Name'
-const PROJECT = 'TestProject'
-
-console.log(
-  `Test parameters: ` +
-    `\ncustomer: ${CUSTOMER}, ` +
-    `\nproject: ${PROJECT}` +
-    `\nname: ${USER_NAME}` +
-    `\nemail: ${EMAIL}, `
-)
-
-describe('Integration tests.', () => {
-  it('Create account.', async () => {
-    console.log(
-      util.inspect(
-        await Account.createUser({
-          names: {
-            customer: `${CUSTOMER}`,
-            project: `${PROJECT}`
-          },
-          password: PASSWORD,
-          userName: USER_NAME,
-          attributes: {
-            family_name: 'Kuhs',
-            given_name: 'Zimon',
-            birthdate: '9006211537',
-            email: EMAIL
-          }
-        })
-      )
-    )
+test('Create account.', async () => {
+  await setupIdentity()
+  await Account.signUp({
+    names: {
+      customer: `${TestParameters.CustomerName}`,
+      project: `${TestParameters.ProjectName}`
+    },
+    password: TestParameters.Password,
+    userName: TestParameters.AdminUser,
+    attributes: {
+      family_name: TestParameters.FamilyName,
+      given_name: TestParameters.GivenName,
+      birthdate: TestParameters.SSN,
+      email: TestParameters.Email
+    }
   })
 })

@@ -1,6 +1,8 @@
+[![Build Status](https://travis-ci.org/ZettaKonsult/zk-open-modules.png)](https://travis-ci.org/ZettaKonsult/zk-open-modules)
+
 # Authentication
 
-Zetta Konsult's small, private API towards AWS' (primarily Cognito's) API.
+Zetta Konsult's small API towards AWS' (primarily Cognito's) API.
 
 ## Responsibilities
 

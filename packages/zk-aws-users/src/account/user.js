@@ -30,8 +30,7 @@ export const userHandler = async (
       ClientId: await UserPool.clientId(names)
     }
   } catch (exception) {
-    console.error(exception)
-    return
+    throw exception
   }
 
   const pool = new CognitoUserPool(params)

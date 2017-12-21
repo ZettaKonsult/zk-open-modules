@@ -1,42 +1,43 @@
 /* @flow */
+/**
+ * @date 2017-12-21
+ */
 
-export const requiredAttributes = (): Array<string> => [
-  'email',
-  'birthdate',
-  'family_name',
-  'given_name'
-]
+import AWS from 'aws-sdk'
+import { settings } from './'
+import util from 'util'
 
-export const Settings = {
-  AccountId: 0,
-  Groups: {
-    Administrator: {
-      Name: 'Administrator',
-      DefaultPassword: 'DefaultPasswordForAdmin'
-    }
-  },
-  Id: String(process.env.AWS_ACCESS_KEY_ID),
-  Identity: {
-    Arn: {
-      Unauthorized: ''
-    },
-    PoolId: ''
-  },
-  Policy: {
-    Version: '2012-10-17'
-  },
-  Region: 'eu-central-1',
-  Session: {
-    ExpireTime: 60000
+let configs = []
+export const addConfig = async (awsConfig: {}) => {
+  configs.push(awsConfig)
+}
+
+export const updateConfigs = async () => {
+  for (let config of configs) {
+    await setConfig(config)
   }
 }
 
-export const setIdentity = (
-  accountId: number,
-  poolId: string,
-  unauthorizedArn: string
-) => {
-  Settings.AccountId = accountId
-  Settings.Identity.PoolId = poolId
-  Settings.Identity.Arn.Unauthorized = unauthorizedArn
+const setConfig = async (awsConfig: {
+  credentials: { IdentityPoolId: string, RoleArn: string, AccountId: string },
+  region: string
+}) => {
+  const mySettings = await settings()
+
+  awsConfig.region = mySettings.Region
+  awsConfig.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: mySettings.Identity.PoolId,
+    RoleArn: mySettings.Identity.Arn.Authorized,
+    AccountId: mySettings.AccountId
+  })
+}
+
+let cognito
+let iam
+
+export const getCognito = async () => {
+  if (cognito == null) {
+    cognito = new AWS.CognitoIdentityServiceProvider()
+  }
+  return cognito
 }

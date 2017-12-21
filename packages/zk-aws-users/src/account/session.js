@@ -13,7 +13,6 @@ import {
   failedLogin,
   successfulLogin
 } from './login'
-import util from 'util'
 import { UserPool } from '../'
 import { userHandler } from './user'
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js'
@@ -44,7 +43,6 @@ const doLogin = async (
   password: string,
   login: LoginObjectFromUser
 ) => {
-  console.log(`Attempting to log in user ${userName}.`)
   try {
     const handler = await userHandler(names, userName, password)
     const user = handler.user

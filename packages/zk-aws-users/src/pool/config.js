@@ -3,33 +3,20 @@
  * @date 2017-12-11
  */
 
+import type { Pool } from '../'
 import type { Attribute } from './'
-import { requiredAttributes } from '../config'
+import { Settings, requiredAttributes } from '../'
 
-const SEP = `-`
+const SEP = Settings.Separator
 
-export const poolName = (names: {
-  project: string,
-  customer: string
-}): string => `${names.project}${SEP}${names.customer}`
+export const clientName = (names: Pool): string =>
+  `${poolName(names)}${SEP}client`
 
-export const clientName = (names: {
-  project: string,
-  customer: string
-}): string => `${poolName(names)}${SEP}client`
+export const domainName = (names: Pool) =>
+  `${poolName(names).toLowerCase()}${SEP}domain`
 
-const stringAttributes = (
-  mutable: boolean,
-  required: boolean,
-  names: Array<string>
-): Array<Attribute> =>
-  names.map((name: string) => {
-    return {
-      Mutable: mutable,
-      Required: required,
-      Name: name
-    }
-  })
+export const poolName = (names: Pool): string =>
+  `${names.project}${SEP}${names.customer}`
 
 export const clientConfiguration = (names: {
   client: string,
@@ -63,16 +50,18 @@ export const poolConfiguration = (
   return {
     PoolName: `${poolId}`,
     AdminCreateUserConfig: {
-      AllowAdminCreateUserOnly: true,
+      AllowAdminCreateUserOnly: false,
       UnusedAccountValidityDays: 0,
       InviteMessageTemplate: {
         EmailMessage:
           `Welcome to ${name}, your username is {username} and ` +
-          `your temporary password is {####} . `,
+          `your temporary password is {####}. `,
         EmailSubject: `Invitation to ${name}!`
       }
     },
-
+    AutoVerifiedAttributes: ['email'],
+    EmailVerificationMessage: `Please click the link below to verify your email address.\n\n{####}.`,
+    EmailVerificationSubject: `${name} signup verification.`,
     EmailConfiguration: {
       ReplyToEmailAddress: `${email}`
     },
@@ -84,8 +73,21 @@ export const poolConfiguration = (
     Schema: stringAttributes(true, true, requiredAttributes()),
     VerificationMessageTemplate: {
       DefaultEmailOption: 'CONFIRM_WITH_LINK',
-      EmailMessageByLink: `Please click the link below to verify your email address. {##Verify Email##} .`,
+      EmailMessageByLink: `Please click the link below to verify your email address. {##Verify Email##}.`,
       EmailSubjectByLink: `${name} signup verification.`
     }
   }
 }
+
+const stringAttributes = (
+  mutable: boolean,
+  required: boolean,
+  names: Array<string>
+): Array<Attribute> =>
+  names.map((name: string) => {
+    return {
+      Mutable: mutable,
+      Required: required,
+      Name: name
+    }
+  })

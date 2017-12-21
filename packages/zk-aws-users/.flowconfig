@@ -3,7 +3,8 @@
 [include]
 
 [libs]
-
+src
+test
 [lints]
 
 [options]
