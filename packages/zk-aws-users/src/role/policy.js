@@ -9,7 +9,6 @@ import type { Pool } from '../'
 import { Settings } from '../'
 import AWS from 'aws-sdk'
 import { pathPrefix, policyName } from './config'
-import util from 'util'
 
 const IAM = new AWS.IAM()
 const getIAM = async () => IAM

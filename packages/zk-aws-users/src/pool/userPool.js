@@ -6,7 +6,6 @@
 
 import type { Pool } from '../'
 import AWS from 'aws-sdk'
-import util from 'util'
 import { createClient } from './client'
 import { domainName, poolName } from '.'
 import { Account, getCognito, settings, addConfig, Role, Settings } from '../'

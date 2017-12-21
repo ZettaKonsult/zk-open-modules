@@ -5,7 +5,6 @@
 
 import AWS from 'aws-sdk'
 import { settings } from './'
-import util from 'util'
 
 let configs = []
 export const addConfig = async (awsConfig: {}) => {

@@ -4,7 +4,6 @@
  * @date 2017-12-14
  */
 
-import util from 'util'
 import type {
   LoginObject,
   LoginObjectFromUser,
@@ -21,7 +20,7 @@ export const setNewPassword = (
   requiredAttributes: { [string]: string }
 ) => {
   user.completeNewPasswordChallenge(password, userAttributes, caller)
-  console.log(`Set new password for ${util.inspect(user)}.`)
+  console.log(`Set new password for ${user.getUserName()}.`)
 }
 
 export const loginSetFirstPasswordProcedure = (

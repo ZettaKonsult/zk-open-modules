@@ -4,7 +4,6 @@
  * @date 2017-12-12
  */
 
-import util from 'util'
 import type { Pool } from '../'
 import AWS from 'aws-sdk'
 import { poolName } from '.'

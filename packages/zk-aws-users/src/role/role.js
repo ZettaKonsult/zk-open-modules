@@ -16,8 +16,6 @@ import AWS from 'aws-sdk'
 const IAM = new AWS.IAM()
 const getIAM = async () => IAM
 
-import util from 'util'
-
 export const createAdminRole = async (names: Pool) => {
   const config = adminConfig()
   const role = await createRole(
@@ -182,8 +180,6 @@ export const listRolePolicies = async (
     RoleName: roleName(names, suffix)
   }
 
-  console.log(`PARAMS: ${util.inspect(params)}`)
-
   let policies = []
   let result = undefined
 
@@ -195,7 +191,6 @@ export const listRolePolicies = async (
       return []
     }
 
-    console.log(`Got result ${util.inspect(result)}`)
     policies = [...policies, ...result]
 
     params = {

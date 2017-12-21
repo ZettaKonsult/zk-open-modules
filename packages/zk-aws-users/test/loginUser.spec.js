@@ -8,7 +8,6 @@
 
 import { Account } from '../src'
 import { setupIdentity, TestParameters } from './testUtil'
-import util from 'util'
 
 test('Test login of user.', async () => {
   await setupIdentity()

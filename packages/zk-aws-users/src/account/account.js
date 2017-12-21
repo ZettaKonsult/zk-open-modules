@@ -1,6 +1,5 @@
 /* @flow */
 
-import util from 'util'
 import type { SignUpData } from '.'
 import type { Pool } from '../'
 import AWS from 'aws-sdk'
