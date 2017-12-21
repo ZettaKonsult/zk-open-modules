@@ -13,8 +13,7 @@ import { createPolicy, getPolicyArn } from './'
 import { UserPool } from '../'
 import AWS from 'aws-sdk'
 
-const IAM = new AWS.IAM()
-const getIAM = async () => IAM
+const getIAM = async () => new AWS.IAM()
 
 export const createAdminRole = async (names: Pool) => {
   const config = adminConfig()

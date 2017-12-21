@@ -25,7 +25,7 @@ export const createUser = async (data: SignUpData): Promise<string> => {
   console.log(`Admin-creating user ${data.userName}.`)
 
   try {
-    if (await userExists(names, userName)) {
+    if (await userExists(data.names, data.userName)) {
       console.log(`User already exists.`)
       return data.userName
     }
@@ -34,7 +34,7 @@ export const createUser = async (data: SignUpData): Promise<string> => {
       await UserPool.userPoolId(data.names),
       data
     )
-    let result = await AWSCognito.adminCreateUser(configuration).promise()
+    let result = await (getCognito()).adminCreateUser(configuration).promise()
 
     let name = result.User.Username
     console.log(`Successfully created user ${name}.`)

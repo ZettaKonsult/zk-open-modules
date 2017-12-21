@@ -27,7 +27,8 @@ const setConfig = async (awsConfig: {
   awsConfig.credentials = new AWS.CognitoIdentityCredentials({
     IdentityPoolId: mySettings.Identity.PoolId,
     RoleArn: mySettings.Identity.Arn.Authorized,
-    AccountId: mySettings.AccountId
+    AccountId: mySettings.AccountId,
+    AccessKeyId: mySettings.AccessKey
   })
 }
 

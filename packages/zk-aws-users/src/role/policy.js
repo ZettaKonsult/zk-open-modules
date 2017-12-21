@@ -10,8 +10,7 @@ import { Settings } from '../'
 import AWS from 'aws-sdk'
 import { pathPrefix, policyName } from './config'
 
-const IAM = new AWS.IAM()
-const getIAM = async () => IAM
+const getIAM = async () => new AWS.IAM()
 
 export const createPolicy = async (
   names: Pool,
