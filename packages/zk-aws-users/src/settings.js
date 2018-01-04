@@ -45,14 +45,12 @@ export const Settings = {
   }
 }
 
-export const settings = async (): Promise<{ [string]: any }> => Settings
-
-export const setIdentity = async (
-  accountId: number,
+export const setIdentity = (
+  accountId: number | string,
   poolId: string,
   authorizedArn: string
 ) => {
-  Settings.AccountId = accountId
+  Settings.AccountId = String(accountId)
   Settings.Identity.PoolId = poolId
   Settings.Identity.Arn.Authorized = authorizedArn
 

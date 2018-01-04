@@ -4,36 +4,33 @@
  */
 
 import AWS from 'aws-sdk'
-import { settings } from './'
+import { Settings } from './'
 
 let configs = []
-export const addConfig = async (awsConfig: {}) => {
+export const addConfig = (awsConfig: AWS.config) => {
   configs.push(awsConfig)
 }
 
-export const updateConfigs = async () => {
+export const updateConfigs = () => {
   for (let config of configs) {
-    await setConfig(config)
+    setConfig(config)
   }
 }
 
-const setConfig = async (awsConfig: {
+const setConfig = (awsConfig: {
   credentials: { IdentityPoolId: string, RoleArn: string, AccountId: string },
   region: string
 }) => {
-  const mySettings = await settings()
-
-  awsConfig.region = mySettings.Region
+  awsConfig.region = Settings.Region
   awsConfig.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: mySettings.Identity.PoolId,
-    RoleArn: mySettings.Identity.Arn.Authorized,
-    AccountId: mySettings.AccountId,
-    AccessKeyId: mySettings.AccessKey
+    IdentityPoolId: Settings.Identity.PoolId,
+    RoleArn: Settings.Identity.Arn.Authorized,
+    AccountId: Settings.AccountId,
+    AccessKeyId: Settings.AccessKey
   })
 }
 
 let cognito
-let iam
 
 export const getCognito = async () => {
   if (cognito == null) {

@@ -1,6 +1,6 @@
 {
   "name": "zk-aws-users",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "main": "dist/index.js",
   "author": "Zimon Kuhs <zmk.zk.dev@gmail.com>",
   "scripts": {

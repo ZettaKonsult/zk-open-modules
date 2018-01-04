@@ -6,7 +6,6 @@
 
 import type { Policy } from './'
 import type { Pool } from '../'
-import { Settings } from '../'
 import AWS from 'aws-sdk'
 import { pathPrefix, policyName } from './config'
 
@@ -78,7 +77,7 @@ export const deletePolicy = async (
   }
 }
 
-const policyExists = async (names: Pool, suffix: string) =>
+export const policyExists = async (names: Pool, suffix: string) =>
   (await getPolicyArn(names, suffix)) != null
 
 export const listPolicies = async (
