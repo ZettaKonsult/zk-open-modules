@@ -7,10 +7,9 @@
  */
 
 import { Account } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
 test('Create account.', async () => {
-  await setupIdentity()
   await Account.signUp({
     names: {
       customer: `${TestParameters.CustomerName}`,

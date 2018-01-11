@@ -5,12 +5,15 @@
  */
 
 import type { Pool } from '../'
+import { Settings, UserPool } from '../'
 import {
   AuthenticationDetails,
   CognitoUserPool,
   CognitoUser
 } from 'amazon-cognito-identity-js'
-import { UserPool } from '../'
+
+import AWS from 'aws-sdk'
+AWS.config.update({ region: Settings.Region })
 
 type UserHandler = {
   pool: Pool,
@@ -30,6 +33,7 @@ export const userHandler = async (
       ClientId: await UserPool.clientId(names)
     }
   } catch (exception) {
+    console.error(exception)
     throw exception
   }
 

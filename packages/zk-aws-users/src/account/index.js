@@ -10,9 +10,12 @@ export type {
 export { createAdminUser, createUser, signUp, signUpAdminUser } from './account'
 export {} from './login'
 export {
+  authorize,
   currentUser,
   loginUser,
   loginSetFirstPassword,
+  masterLogin,
+  masterSignOut,
   signOutUser,
   userToken
 } from './session'

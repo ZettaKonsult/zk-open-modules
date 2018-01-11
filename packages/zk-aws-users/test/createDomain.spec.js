@@ -7,10 +7,9 @@
  */
 
 import { UserPool } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
 test('Creating domain.', async () => {
-  await setupIdentity()
   await UserPool.createDomain({
     customer: TestParameters.CustomerName,
     project: TestParameters.ProjectName

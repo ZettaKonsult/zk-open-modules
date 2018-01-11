@@ -1,6 +1,6 @@
 {
   "name": "zk-aws-users",
-  "version": "0.1.3",
+  "version": "0.2.3",
   "main": "dist/index.js",
   "author": "Zimon Kuhs <zmk.zk.dev@gmail.com>",
   "scripts": {
@@ -13,16 +13,19 @@
     "prepublish": "yarn run build",
     "postpublish": "rm -rf /dist",
     "precommit": "lint-staged && yarn run test",
+    "update": "yarn test && yarn build",
     "test:assign": "jest assignUser",
+    "test:confirmCreated": "jest confirmAdminCreated",
+    "test:clean": "jest cleanTest",
     "test:domain": "jest createDomain",
-    "test:login": "jest loginUser",
     "test:group": "jest createGroup",
+    "test:integration": "yarn test:pool && yarn test:role",
+    "test:login": "jest loginUser",
+    "test:login-full": "yarn test:updatePassword && yarn test:login",
     "test:pool": "jest createPool",
     "test:role": "jest createRole",
-    "test:user": "jest createUser",
-    "test:clean": "jest cleanTest",
-    "test:integration": "yarn test:pool && yarn test:role",
-    "update": "yarn test && yarn build"
+    "test:updatePassword": "jest updatePassword",
+    "test:user": "jest createUser"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

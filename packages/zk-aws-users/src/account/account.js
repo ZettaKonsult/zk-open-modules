@@ -1,11 +1,13 @@
 /* @flow */
 
-import type { SignUpData } from '.'
 import type { Pool } from '../'
-import AWS from 'aws-sdk'
+import type { SignUpData } from './types'
+import { Settings, UserPool } from '../'
 import { adminCreateConfig, adminConfig, signUpConfig } from './config'
-import { UserPool } from '../'
 import { getCognito } from '../config'
+
+import AWS from 'aws-sdk'
+AWS.config.update({ region: Settings.Region })
 
 export const createAdminUser = async (data: {
   names: Pool,
@@ -34,14 +36,16 @@ export const createUser = async (data: SignUpData): Promise<string> => {
       await UserPool.userPoolId(data.names),
       data
     )
-    let result = await (getCognito()).adminCreateUser(configuration).promise()
+    let result = await getCognito()
+      .adminCreateUser(configuration)
+      .promise()
 
     let name = result.User.Username
     console.log(`Successfully created user ${name}.`)
     return name
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 
@@ -53,18 +57,13 @@ export const signUpAdminUser = async (data: {
 
   return await signUp({
     names: data.names,
-    password: config.password,
     userName: config.userName,
+    password: config.password,
     attributes: data.attributes
   })
 }
 
-export const signUp = async (data: {
-  names: Pool,
-  password: string,
-  userName: string,
-  attributes: { [string]: string }
-}): Promise<string> => {
+export const signUp = async (data: SignUpData): Promise<string> => {
   const name = data.userName
   console.log(`Signing up user ${name}.`)
 
@@ -84,7 +83,7 @@ export const signUp = async (data: {
     return name
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 

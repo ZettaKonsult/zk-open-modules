@@ -11,24 +11,30 @@ import type {
 } from './'
 import { CognitoUser } from 'amazon-cognito-identity-js'
 
-export const setNewPassword = (
+export const setNewPassword = (params: {
   user: CognitoUser,
   password: string,
-  caller: LoginObject
-): PasswordChallengeCompleter => (
-  userAttributes: { [string]: string },
-  requiredAttributes: { [string]: string }
-) => {
-  user.completeNewPasswordChallenge(password, userAttributes, caller)
-  console.log(`Set new password for ${user.getUserName()}.`)
+  caller: LoginObject,
+  attributes: { [string]: string }
+}): PasswordChallengeCompleter => async () => {
+  const { user, password, attributes, caller } = params
+
+  await user.completeNewPasswordChallenge(password, attributes, caller)
+  console.log(`Set new password for ${user.username}.`)
 }
 
-export const loginSetFirstPasswordProcedure = (
-  newPassword: string
-): LoginObjectFromUser => {
+export const loginSetFirstPasswordProcedure = (params: {
+  newPassword: string,
+  attributes: { [string]: string }
+}): LoginObjectFromUser => {
   let procedure = loginProcedure()
   return user => {
-    procedure.newPasswordRequired = setNewPassword(user, newPassword, procedure)
+    procedure.newPasswordRequired = setNewPassword({
+      user: user,
+      password: params.newPassword,
+      caller: procedure,
+      attributes: params.attributes
+    })
     return procedure
   }
 }

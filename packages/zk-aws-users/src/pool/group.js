@@ -5,13 +5,10 @@
  */
 
 import type { Pool } from '../'
-import AWS from 'aws-sdk'
 import { poolName } from '.'
-import { addConfig, getCognito } from '../'
+import { getCognito } from '../'
 import { groupConfiguration } from './config'
 import { userPoolId } from './userPool'
-
-addConfig(AWS.config)
 
 export const createAdminGroup = async (names: {
   project: string,
@@ -73,14 +70,12 @@ export const createGroup = async (
     return name
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 
-export const groupExists = async (
-  names: Pool,
-  groupName: string
-): Promise<boolean> => (await listGroups(names)).indexOf(groupName) > -1
+export const groupExists = async (names: Pool, groupName: string): boolean =>
+  (await listGroups(names)).indexOf(groupName) > -1
 
 export const listGroups = async (names: Pool): { [string]: string } => {
   let params = {
@@ -96,7 +91,7 @@ export const listGroups = async (names: Pool): { [string]: string } => {
       result = (await (await getCognito()).listGroups(params).promise()).Groups
     } catch (exception) {
       console.error(exception)
-      return
+      throw exception
     }
 
     groups = result.reduce((groups, group) => {

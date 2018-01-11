@@ -8,6 +8,8 @@ import type { Pool } from '../'
 import type { Policy, RolePolicy, RoleStatement } from './types'
 import { Settings } from '../'
 
+import AWS from 'aws-sdk'
+
 const SEP = Settings.Separator
 
 export const pathPrefix = (names: Pool): string =>
@@ -61,6 +63,14 @@ export const adminRolePolicy = (): RolePolicy => {
     Version: Settings.Policy.Version,
     Statement: buildStatements(Settings.Groups.Administrator.Name)
   }
+}
+
+let iam
+export const getIAM = async (): AWS.IAM => {
+  if (iam == null) {
+    iam = new AWS.IAM()
+  }
+  return iam
 }
 
 const buildStatements = (userName: string): Array<RoleStatement> => {

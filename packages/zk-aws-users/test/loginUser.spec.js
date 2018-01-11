@@ -7,18 +7,21 @@
  */
 
 import { Account } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
-test('Test login of user.', async () => {
-  await setupIdentity()
+test('Logging in user.', async () => {
   const pool = {
     customer: TestParameters.CustomerName,
     project: TestParameters.ProjectName
   }
 
-  const token = await Account.loginUser(
-    pool,
-    TestParameters.AdminUser,
-    TestParameters.Password
-  )
+  await Account.masterLogin()
+  await Account.masterSignOut()
+  await Account.signOutUser({ names: pool })
+  await Account.loginUser({
+    names: pool,
+    userName: TestParameters.AdminUser,
+    password: TestParameters.NewPassword
+  })
+  await Account.signOutUser({ names: pool })
 })

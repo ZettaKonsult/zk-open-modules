@@ -7,10 +7,9 @@
  */
 
 import { UserPool } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
-test('Integration tests.', async () => {
-  await setupIdentity()
+test('Creating group.', async () => {
   await UserPool.createGroup(
     {
       customer: `${TestParameters.CustomerName}`,

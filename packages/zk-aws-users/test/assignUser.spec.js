@@ -2,15 +2,12 @@
 
 /**
  * @date 2017-12-13
- *
- * Use to manually test creation of an user account.
  */
 
 import { UserPool } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
-test('Integration tests.', async () => {
-  await setupIdentity()
+test('Assign user to a group.', async () => {
   await UserPool.assignUserToGroup(
     {
       customer: TestParameters.CustomerName,

@@ -4,25 +4,18 @@
  * @date 2017-12-12
  */
 
-import { setIdentity } from '../src'
-
-const ACCOUNT_ID = ''
-const IDENTITY_ID = ''
-const ROLE_ARN = ''
-
 export const TestParameters = {
+  Address: 'Some street, some number.',
   AdminGroup: 'AdministratorGroup',
   AdminUser: 'Administrator',
   CustomerName: 'TestCustomer',
-  Email: '',
+  Email: process.env.AWS_SENT_BY_EMAIL,
   FamilyName: 'FamilyName',
   GivenName: 'GivenName',
-  Password: 'DefaultPasswordForAdmin',
+  Password: 'TemporaryPasswordForAdmin',
+  NewPassword: 'DefaultPasswordForAdmin',
   ProjectName: 'TestProject',
   SSN: '0001011111',
   UserGroup: 'UserGroup',
   UserName: 'User'
 }
-
-export const setupIdentity = async () =>
-  await setIdentity(ACCOUNT_ID, IDENTITY_ID, ROLE_ARN)

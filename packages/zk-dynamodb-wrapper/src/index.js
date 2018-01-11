@@ -6,7 +6,7 @@ import { get } from './get'
 import { create } from './create'
 import { remove } from './delete'
 
-export default ({ region, auth = () => {} }) => {
+export default ({ region, auth = async () => {} }) => {
   AWS.config.update({ region })
   return {
     beforeEach: async function() {

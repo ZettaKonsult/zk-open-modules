@@ -5,10 +5,9 @@
  */
 
 import { Role } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
-test('Integration tests.', async () => {
-  await setupIdentity()
+test('Creating role.', async () => {
   await Role.createAdminRole({
     customer: TestParameters.CustomerName,
     project: TestParameters.ProjectName

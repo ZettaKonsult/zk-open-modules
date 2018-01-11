@@ -5,20 +5,9 @@
  */
 
 import type { Pool } from '../'
-import AWS from 'aws-sdk'
-import { Settings } from '../'
 import { userPoolId, clientName, poolName } from '.'
 import { clientConfiguration } from './config'
 import { getCognito } from '../config'
-
-AWS.config.region = 'eu-central-1'
-AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: Settings.Identity.PoolId,
-  RoleArn: Settings.Identity.Arn.Unauthorized,
-  AccountId: Settings.AccountId
-})
-
-let cognito
 
 export const createClient = async (names: Pool): Promise<string> => {
   const pool = poolName(names)
@@ -46,7 +35,7 @@ export const createClient = async (names: Pool): Promise<string> => {
     return clientId
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 
@@ -62,7 +51,7 @@ export const clientId = async (names: Pool): Promise<string> => {
     return clientId
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 
@@ -82,7 +71,7 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
         .promise()).UserPoolClients
     } catch (exception) {
       console.error(exception)
-      return []
+      throw exception
     }
 
     clients = result.reduce((clients, client) => {

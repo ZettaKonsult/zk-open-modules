@@ -2,15 +2,12 @@
 
 /**
  * @date 2017-12-12
- *
- * Use to manually test creation of an user pool.
  */
 
 import { UserPool } from '../src'
-import { setupIdentity, TestParameters } from './testUtil'
+import { TestParameters } from './testUtil'
 
 test('Creating pool.', async () => {
-  await setupIdentity()
   await UserPool.createUserPool(
     {
       customer: `${TestParameters.CustomerName}`,
@@ -18,9 +15,9 @@ test('Creating pool.', async () => {
     },
     TestParameters.Email,
     {
-      family_name: 'FamilyName',
-      given_name: 'GivenName',
-      birthdate: '0001011111',
+      family_name: TestParameters.FamilyName,
+      given_name: TestParameters.GivenName,
+      birthdate: TestParameters.SSN,
       email: TestParameters.Email
     }
   )

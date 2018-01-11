@@ -3,13 +3,12 @@
 /**
  * @date 2017-12-18
  */
-
 import type { Policy } from './'
 import type { Pool } from '../'
-import AWS from 'aws-sdk'
 import { pathPrefix, policyName } from './config'
 
-const getIAM = async () => new AWS.IAM()
+import AWS from 'aws-sdk'
+const iam = new AWS.IAM()
 
 export const createPolicy = async (
   names: Pool,
@@ -36,7 +35,7 @@ export const createPolicy = async (
       }
     }
 
-    const result = await (await getIAM()).createPolicy(params).promise()
+    const result = await (await iam).createPolicy(params).promise()
 
     const policyArn = result.Policy.Arn
     const policyName = result.Policy.PolicyName
@@ -48,7 +47,7 @@ export const createPolicy = async (
     }
   } catch (exception) {
     console.error(exception)
-    return {}
+    throw exception
   }
 }
 
@@ -68,12 +67,12 @@ export const deletePolicy = async (
       PolicyArn: arn
     }
 
-    await (await getIAM()).deletePolicy(params).promise()
+    await (await iam).deletePolicy(params).promise()
     console.log(`Successfully deleted policy.`)
     return true
   } catch (exception) {
     console.error(exception)
-    return false
+    throw exception
   }
 }
 
@@ -95,10 +94,10 @@ export const listPolicies = async (
 
   do {
     try {
-      result = (await (await getIAM()).listPolicies(params).promise()).Policies
+      result = (await (await iam).listPolicies(params).promise()).Policies
     } catch (exception) {
       console.error(exception)
-      return {}
+      throw exception
     }
 
     policies = result.reduce((policies, policy) => {

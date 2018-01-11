@@ -5,14 +5,14 @@
  */
 
 import type { Pool } from '../'
-import AWS from 'aws-sdk'
+import { domainName, poolName } from './'
+import { Account, getCognito, Role, Settings } from '../'
 import { createClient } from './client'
-import { domainName, poolName } from '.'
-import { Account, getCognito, settings, addConfig, Role, Settings } from '../'
-import { assignUserToGroup, createAdminGroup } from './group'
 import { poolConfiguration } from './config'
+import { assignUserToGroup, createAdminGroup } from './group'
 
-addConfig(AWS.config)
+import AWS from 'aws-sdk'
+AWS.config.update({ region: Settings.Region })
 
 export const createUserPool = async (
   names: Pool,
@@ -30,11 +30,11 @@ export const createUserPool = async (
       attributes: attributes
     })
     result.group = await assignUserToGroup(names, result.group, result.admin)
-    await Role.createAdminRole(names)
+    result.role = await Role.createAdminRole(names)
     return result
   } catch (exception) {
     console.error(exception)
-    return
+    throw exception
   }
 }
 
@@ -44,7 +44,7 @@ export const createDomain = async (pool: Pool): Promise<string> => {
   try {
     const name = domainName(pool)
     console.log(`Found name to be ${name}.`)
-    const result = await (await getCognito())
+    await (await getCognito())
       .createUserPoolDomain({
         Domain: name,
         UserPoolId: await userPoolId(pool)
@@ -74,14 +74,14 @@ const createPool = async (
   }
 
   try {
-    const result = await (await getCognito())
+    await (await getCognito())
       .createUserPool(poolConfiguration(name, name, replyEmail))
       .promise()
     console.log(`Successfully created user pool ${name}.`)
     return true
   } catch (exception) {
     console.error(exception)
-    return false
+    throw exception
   }
 }
 
@@ -106,7 +106,7 @@ export const deleteDomain = async (names: Pool): Promise<boolean> => {
     return true
   } catch (exception) {
     console.error(exception)
-    return false
+    throw exception
   }
 }
 
@@ -127,7 +127,7 @@ export const deleteUserPool = async (names: Pool): Promise<boolean> => {
     return true
   } catch (exception) {
     console.error(exception)
-    return false
+    throw exception
   }
 }
 
@@ -139,7 +139,7 @@ export const userPoolId = async (names: Pool): Promise<string> => {
     return (await listPools())[poolName(names)]
   } catch (exception) {
     console.error(exception)
-    return ''
+    throw exception
   }
 }
 
@@ -157,7 +157,7 @@ export const listPools = async (): { [string]: string } => {
         .UserPools
     } catch (exception) {
       console.error(exception)
-      return
+      throw exception
     }
 
     pools = result.reduce((pools, pool) => {

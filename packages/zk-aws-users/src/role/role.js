@@ -6,14 +6,13 @@
 
 import type { RolePolicy } from './'
 import type { Pool } from '../'
-import { Settings } from '../'
-import { getCognito } from '../config'
-import { adminConfig, pathPrefix, policyName, roleName } from './config'
 import { createPolicy, getPolicyArn } from './'
-import { UserPool } from '../'
-import AWS from 'aws-sdk'
+import { Settings, UserPool } from '../'
+import { adminConfig, pathPrefix, policyName, roleName } from './config'
+import { getCognito } from '../config'
 
-const getIAM = async () => new AWS.IAM()
+import AWS from 'aws-sdk'
+const iam = new AWS.IAM()
 
 export const createAdminRole = async (names: Pool) => {
   const config = adminConfig()
@@ -36,7 +35,7 @@ export const attachPolicy = async (roleName: string, policyArn: string) => {
   console.log(`Attaching policy ${policyArn} to the role ${roleName}.`)
 
   try {
-    await (await getIAM())
+    await (await iam)
       .attachRolePolicy({
         PolicyArn: policyArn,
         RoleName: roleName
@@ -47,7 +46,7 @@ export const attachPolicy = async (roleName: string, policyArn: string) => {
     )
   } catch (exception) {
     console.error(exception)
-    return
+    throw exception
   }
 }
 
@@ -76,7 +75,7 @@ export const setGroupRole = async (
     console.log(`Successfully updated group ${groupName}.`)
   } catch (exception) {
     console.error(exception)
-    return
+    throw exception
   }
 }
 
@@ -104,7 +103,7 @@ export const createRole = async (
       RoleName: name
     }
 
-    const result = await (await getIAM()).createRole(params).promise()
+    const result = await (await iam).createRole(params).promise()
     console.log(`Successfully created role ${name}.`)
 
     return {
@@ -114,7 +113,7 @@ export const createRole = async (
     }
   } catch (exception) {
     console.error(exception)
-    return {}
+    throw exception
   }
 }
 
@@ -137,11 +136,11 @@ export const deleteRole = async (
     }
 
     await detachAllPolicies(names, policySuffix, roleSuffix)
-    await (await getIAM()).deleteRole(params).promise()
+    await (await iam).deleteRole(params).promise()
     return true
   } catch (exception) {
     console.error(exception)
-    return false
+    throw exception
   }
 }
 
@@ -156,11 +155,11 @@ export const detachAllPolicies = async (
   try {
     const arn = await getPolicyArn(names, policySuffix)
 
-    const IAM = await console.log(
+    console.log(
       `Detaching policy ${policyName(names, policySuffix)} from role ${name}.`
     )
 
-    await (await getIAM())
+    await (await iam)
       .detachRolePolicy({
         PolicyArn: `${arn}`,
         RoleName: `${name}`
@@ -184,10 +183,10 @@ export const listRolePolicies = async (
 
   do {
     try {
-      result = await (await getIAM()).listRolePolicies(params).promise()
+      result = await (await iam).listRolePolicies(params).promise()
     } catch (exception) {
       console.error(exception)
-      return []
+      throw exception
     }
 
     policies = [...policies, ...result]
@@ -217,10 +216,10 @@ export const listRoles = async (names: Pool): Promise<{ [string]: string }> => {
 
   do {
     try {
-      result = (await (await getIAM()).listRoles(params).promise()).Roles
+      result = (await (await iam).listRoles(params).promise()).Roles
     } catch (exception) {
       console.error(exception)
-      return {}
+      throw exception
     }
 
     roles = result.reduce((roles, role) => {
