@@ -4,8 +4,7 @@
  * @date 2017-12-14
  */
 
-import util from 'util'
-import type { LoginObjectFromUser } from './'
+import type { LoginObjectFromUser, SessionObject } from './'
 import type { Pool } from '../'
 import AWS from 'aws-sdk'
 import {
@@ -65,7 +64,7 @@ const doLogin = async (params: {
   userName: string,
   password: string,
   login: LoginObjectFromUser
-}): Promise<string> => {
+}): Promise<SessionObject> => {
   const { names, userName, password, login } = params
 
   try {

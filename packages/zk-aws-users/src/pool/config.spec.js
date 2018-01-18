@@ -8,12 +8,13 @@ import { clientConfiguration, poolConfiguration } from './config'
 describe('Basic tests.', () => {
   it('Pool configuration.', () => {
     expect(poolConfiguration('ID', 'NAME', 'EMAIL')).toEqual({
+      AutoVerifiedAttributes: ['email'],
       PoolName: 'ID',
       AdminCreateUserConfig: {
-        AllowAdminCreateUserOnly: true,
+        AllowAdminCreateUserOnly: false,
         InviteMessageTemplate: {
           EmailMessage:
-            'Welcome to NAME, your username is {username} and your temporary password is {####} . ',
+            'Welcome to NAME, your username is {username} and your temporary password is {####}. ',
           EmailSubject: 'Invitation to NAME!'
         },
         UnusedAccountValidityDays: 0
@@ -21,6 +22,9 @@ describe('Basic tests.', () => {
       EmailConfiguration: {
         ReplyToEmailAddress: 'EMAIL'
       },
+      EmailVerificationMessage:
+        'Please click the link below to verify your email address.\n\n{####}.',
+      EmailVerificationSubject: 'NAME signup verification.',
       Policies: {
         PasswordPolicy: {
           MinimumLength: 14
@@ -52,7 +56,7 @@ describe('Basic tests.', () => {
         DefaultEmailOption: 'CONFIRM_WITH_LINK',
         EmailMessageByLink:
           'Please click the link below to verify your' +
-          ' email address. {##Verify Email##} .',
+          ' email address. {##Verify Email##}.',
         EmailSubjectByLink: 'NAME signup verification.'
       }
     })

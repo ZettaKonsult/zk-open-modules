@@ -8,6 +8,7 @@
 
 import { Account } from '../src'
 import { TestParameters } from './testUtil'
+import util from 'util'
 
 test('Logging in user.', async () => {
   const pool = {
@@ -15,13 +16,17 @@ test('Logging in user.', async () => {
     project: TestParameters.ProjectName
   }
 
-  await Account.masterLogin()
+  console.log(util.inspect(await Account.masterLogin()))
   await Account.masterSignOut()
   await Account.signOutUser({ names: pool })
-  await Account.loginUser({
-    names: pool,
-    userName: TestParameters.AdminUser,
-    password: TestParameters.NewPassword
-  })
+  console.log(
+    util.inspect(
+      await Account.loginUser({
+        names: pool,
+        userName: TestParameters.AdminUser,
+        password: TestParameters.NewPassword
+      })
+    )
+  )
   await Account.signOutUser({ names: pool })
 })

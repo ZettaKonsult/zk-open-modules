@@ -7,6 +7,11 @@
 import type { Pool } from '../'
 import { CognitoUser } from 'amazon-cognito-identity-js'
 
+export type Session = {
+  token: string,
+  groups: Array<string>
+}
+
 export type AdminCreateData = {
   userName: string,
   names: Pool,

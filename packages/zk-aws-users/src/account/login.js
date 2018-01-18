@@ -7,9 +7,11 @@
 import type {
   LoginObject,
   LoginObjectFromUser,
-  PasswordChallengeCompleter
+  PasswordChallengeCompleter,
+  Session
 } from './'
 import { CognitoUser } from 'amazon-cognito-identity-js'
+import util from 'util'
 
 export const setNewPassword = (params: {
   user: CognitoUser,
@@ -39,11 +41,16 @@ export const loginSetFirstPasswordProcedure = (params: {
   }
 }
 
-export const successfulLogin = (result: Object): string => {
+export const successfulLogin = (result: Object): Session => {
   console.log(
     `Successfully logged in user ${result.idToken.payload['cognito:username']}.`
   )
-  return result.getIdToken().getJwtToken()
+  const idToken = result.getIdToken()
+
+  return {
+    token: idToken.getJwtToken(),
+    groups: idToken.payload['cognito:groups']
+  }
 }
 
 export const failedLogin = (error: Object) => {

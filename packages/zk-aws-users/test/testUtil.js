@@ -11,6 +11,7 @@ export const TestParameters = {
   CustomerName: 'TestCustomer',
   Email: process.env.AWS_SENT_BY_EMAIL,
   FamilyName: 'FamilyName',
+  Gender: 'Male',
   GivenName: 'GivenName',
   Password: 'TemporaryPasswordForAdmin',
   NewPassword: 'DefaultPasswordForAdmin',
