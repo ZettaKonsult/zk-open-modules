@@ -1,6 +1,6 @@
 {
   "name": "zk-dynamodb-wrapper",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "",
   "repository": {
     "type": "git",
@@ -18,7 +18,6 @@
     "travis:test": "jest",
     "precommit": "lint-staged && yarn run test",
     "prepublishOnly": "yarn run build",
-    "publish": "npm publish",
     "postpublishOnly": "rm -rf dist"
   },
   "dependencies": {

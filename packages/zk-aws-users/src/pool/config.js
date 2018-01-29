@@ -3,30 +3,30 @@
  * @date 2017-12-11
  */
 
-import type { Pool } from '../'
-import type { Attribute } from './'
-import { Settings, requiredAttributes } from '../'
+import type { Attribute, Pool } from '../types';
+import { Settings } from '../settings';
+import { requiredAttributes } from '../settings';
 
-const SEP = Settings.Separator
+const SEP = Settings.Separator;
 
 export const clientName = (names: Pool): string =>
-  `${poolName(names)}${SEP}client`
+  `${poolName(names)}${SEP}client`;
 
 export const domainName = (names: Pool) =>
-  `${poolName(names).toLowerCase()}${SEP}domain`
+  `${poolName(names).toLowerCase()}${SEP}domain`;
 
 export const poolName = (names: Pool): string =>
-  `${names.project}${SEP}${names.customer}`
+  `${names.project}${SEP}${names.customer}`;
 
 export const clientConfiguration = (names: {
   client: string,
-  pool: string
+  pool: string,
 }): { UserPoolId: string, ClientName: string } => {
   return {
     UserPoolId: `${names.pool}`,
-    ClientName: `${names.client}`
-  }
-}
+    ClientName: `${names.client}`,
+  };
+};
 
 export const groupConfiguration = (
   userPoolId: string,
@@ -38,9 +38,9 @@ export const groupConfiguration = (
     UserPoolId: `${userPoolId}`,
     GroupName: `${groupName}`,
     Precedence: precedence,
-    Description: `${description}`
-  }
-}
+    Description: `${description}`,
+  };
+};
 
 export const poolConfiguration = (
   poolId: string,
@@ -56,28 +56,28 @@ export const poolConfiguration = (
         EmailMessage:
           `Welcome to ${name}, your username is {username} and ` +
           `your temporary password is {####}. `,
-        EmailSubject: `Invitation to ${name}!`
-      }
+        EmailSubject: `Invitation to ${name}!`,
+      },
     },
     AutoVerifiedAttributes: ['email'],
     EmailVerificationMessage: `Please click the link below to verify your email address.\n\n{####}.`,
     EmailVerificationSubject: `${name} signup verification.`,
     EmailConfiguration: {
-      ReplyToEmailAddress: `${email}`
+      ReplyToEmailAddress: `${email}`,
     },
     Policies: {
       PasswordPolicy: {
-        MinimumLength: 14
-      }
+        MinimumLength: 14,
+      },
     },
     Schema: stringAttributes(true, true, requiredAttributes()),
     VerificationMessageTemplate: {
       DefaultEmailOption: 'CONFIRM_WITH_LINK',
       EmailMessageByLink: `Please click the link below to verify your email address. {##Verify Email##}.`,
-      EmailSubjectByLink: `${name} signup verification.`
-    }
-  }
-}
+      EmailSubjectByLink: `${name} signup verification.`,
+    },
+  };
+};
 
 const stringAttributes = (
   mutable: boolean,
@@ -88,6 +88,6 @@ const stringAttributes = (
     return {
       Mutable: mutable,
       Required: required,
-      Name: name
-    }
-  })
+      Name: name,
+    };
+  });

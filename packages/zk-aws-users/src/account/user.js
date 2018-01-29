@@ -4,40 +4,42 @@
  * @date 2017-12-14
  */
 
-import type { Pool } from '../'
-import { Settings, UserPool } from '../'
+import type { Pool } from '../types';
+import { getAWS } from '../config';
+import { Settings } from '../settings';
+import { userPoolId } from '../pool/userPool';
+import { clientId } from '../pool/client';
 import {
   AuthenticationDetails,
   CognitoUserPool,
   CognitoUser
-} from 'amazon-cognito-identity-js'
+} from 'amazon-cognito-identity-js';
 
-import AWS from 'aws-sdk'
-AWS.config.update({ region: Settings.Region })
+const AWS = getAWS();
 
 type UserHandler = {
   pool: Pool,
   user: CognitoUser,
   details: AuthenticationDetails
-}
+};
 
 export const userHandler = async (
   names: Pool,
   userName: string,
   password: string
 ): Promise<UserHandler> => {
-  let params
+  let params;
   try {
     params = {
-      UserPoolId: await UserPool.userPoolId(names),
-      ClientId: await UserPool.clientId(names)
-    }
+      UserPoolId: await userPoolId(names),
+      ClientId: await clientId(names)
+    };
   } catch (exception) {
-    console.error(exception)
-    throw exception
+    console.error(exception);
+    throw exception;
   }
 
-  const pool = new CognitoUserPool(params)
+  const pool = new CognitoUserPool(params);
   return {
     pool: pool,
     user: new CognitoUser({
@@ -48,5 +50,5 @@ export const userHandler = async (
       Username: userName,
       Password: password
     })
-  }
-}
+  };
+};

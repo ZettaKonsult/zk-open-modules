@@ -7,6 +7,6 @@ export const validateChangePassword = (
 ): boolean =>
   oldPassword.length > 0 &&
   newPassword.length > 8 &&
-  newPassword === newPasswordConfirm
+  newPassword === newPasswordConfirm;
 
-export const isRequired = (input: string): boolean => input.length > 0
+export const isRequired = (input: string): boolean => input.length > 0;

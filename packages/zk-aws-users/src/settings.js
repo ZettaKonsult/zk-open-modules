@@ -8,57 +8,58 @@ export const requiredAttributes = (): Array<string> => [
   'email',
   'birthdate',
   'family_name',
-  'given_name'
-]
+  'given_name',
+];
 
 export const Settings = {
   AccessKey: '',
   AccountId: '',
   Administrator: {
     PolicyName: 'administratorPolicy',
-    RoleName: 'administratorRole'
+    RoleName: 'administratorRole',
   },
   Domain: {
-    NameAttempts: 1000
+    NameAttempts: 1000,
   },
   Groups: {
     Administrator: {
       Name: 'Administrator',
-      DefaultPassword: 'DefaultPasswordForAdmin'
-    }
+      DefaultPassword: 'DefaultPasswordForAdmin',
+    },
   },
   Identity: {
     Arn: {
       Authorized: '',
-      Unauthorized: ''
+      Unauthorized: '',
     },
-    PoolId: ''
+    PoolId: '',
   },
   Master: {
     Pool: {
       customer: '',
-      project: ''
+      project: '',
     },
     Password: '',
-    UserName: ''
+    UserName: '',
   },
   Policy: {
-    Version: '2012-10-17'
+    Version: '2012-10-17',
   },
   Region: 'eu-central-1',
   Separator: '-',
   Session: {
-    ExpireTime: 60000
-  }
-}
+    ExpireTime: 60000,
+  },
+};
 
-const env = process.env
-Settings.AccessKey = env.AWS_ACCESS_KEY_ID
-Settings.AccountId = env.AWS_ACCOUNT_ID
-Settings.Master.UserName = env.AWS_MASTER_USER
-Settings.Master.Password = env.AWS_MASTER_PASSWORD
-Settings.Master.Pool.customer = env.AWS_MASTER_POOL_CUSTOMER
-Settings.Master.Pool.project = env.AWS_MASTER_POOL_PROJECT
-Settings.Identity.PoolId = env.AWS_IDENTITY_ID
-Settings.Identity.Arn.Unauthorized = env.AWS_UNAUTH_ROLE_ARN
-Settings.Identity.Arn.Authorized = env.AWS_AUTH_ROLE_ARN
+export default config => {
+  Settings.AccessKey = config.AWS_ACCESS_KEY_ID;
+  Settings.AccountId = config.AWS_ACCOUNT_ID;
+  Settings.Master.UserName = config.AWS_MASTER_USER;
+  Settings.Master.Password = config.AWS_MASTER_PASSWORD;
+  Settings.Master.Pool.customer = config.AWS_MASTER_POOL_CUSTOMER;
+  Settings.Master.Pool.project = config.AWS_MASTER_POOL_PROJECT;
+  Settings.Identity.PoolId = config.AWS_IDENTITY_ID;
+  Settings.Identity.Arn.Unauthorized = config.AWS_UNAUTH_ROLE_ARN;
+  Settings.Identity.Arn.Authorized = config.AWS_AUTH_ROLE_ARN;
+};

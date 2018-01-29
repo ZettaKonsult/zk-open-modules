@@ -3,21 +3,38 @@
  * @date 2017-12-13
  */
 
-export type { Attribute } from './types'
-export {
+import {
   clientName,
   domainName,
   poolName,
   clientConfiguration,
-  poolConfiguration
-} from './config'
-export { createClient, clientId } from './client'
-export { assignUserToGroup, createGroup } from './group'
-export {
+  poolConfiguration,
+} from './config';
+import { createClient, clientId } from './client';
+import { assignUserToGroup, createGroup } from './group';
+import {
   createUserPool,
   createDomain,
   deleteDomain,
   deleteUserPool,
   userPoolId,
-  listPools
-} from './userPool'
+  listPools,
+} from './userPool';
+
+export default {
+  clientName,
+  domainName,
+  poolName,
+  clientConfiguration,
+  poolConfiguration,
+  createClient,
+  clientId,
+  assignUserToGroup,
+  createGroup,
+  createUserPool,
+  createDomain,
+  deleteDomain,
+  deleteUserPool,
+  userPoolId,
+  listPools,
+};

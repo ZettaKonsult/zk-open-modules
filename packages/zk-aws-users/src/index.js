@@ -1,13 +1,22 @@
 /* @flow */
 
-export * as Account from './account'
-export * as Role from './role'
-export * as UserPool from './pool'
+import Account from './account';
+import UserPool from './pool';
 
-export { addConfig, getCognito, getIAM, updateConfigs } from './config'
-export { requiredAttributes, setIdentity, Settings } from './settings'
+import { addConfig, getCognito, getIAM, getAWS, updateConfigs } from './config';
+import Settings, { requiredAttributes, setIdentity } from './settings';
 
-export type Pool = {
-  customer: string,
-  project: string
-}
+export default (config: { [string]: string }) => {
+  Settings(config);
+  return {
+    Account,
+    UserPool,
+    addConfig,
+    getCognito,
+    getIAM,
+    getAWS,
+    updateConfigs,
+    requiredAttributes,
+    setIdentity,
+  };
+};

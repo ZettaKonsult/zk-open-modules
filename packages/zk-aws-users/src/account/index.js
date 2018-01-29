@@ -1,22 +1,31 @@
 /* @flow */
 
-export type {
-  AdminCreateData,
-  SignUpData,
-  PasswordChallengeCompleter,
-  LoginObject,
-  LoginObjectFromUser
-} from './types.js'
-export { createAdminUser, createUser, signUp, signUpAdminUser } from './account'
-export {} from './login'
-export {
-  authorize,
+import {
+  createAdminUser,
+  createUser,
+  signUp,
+  signUpAdminUser,
+} from './account';
+import {
   currentUser,
   loginUser,
   loginSetFirstPassword,
   masterLogin,
   masterSignOut,
   signOutUser,
-  userToken
-} from './session'
-export {} from './user'
+  userToken,
+} from './session';
+
+export default {
+  createAdminUser,
+  createUser,
+  signUp,
+  signUpAdminUser,
+  currentUser,
+  loginUser,
+  loginSetFirstPassword,
+  masterLogin,
+  masterSignOut,
+  signOutUser,
+  userToken,
+};
