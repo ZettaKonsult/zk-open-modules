@@ -11,7 +11,6 @@ import type {
   Session,
 } from '../types';
 import { CognitoUser } from 'amazon-cognito-identity-js';
-import util from 'util';
 
 export const setNewPassword = (params: {
   user: CognitoUser,

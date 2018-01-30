@@ -19,28 +19,37 @@ export const adminConfig = () => {
   };
 };
 
-export const adminCreateConfig = (
+export const adminCreateConfig = (params: {
   userPoolId: string,
-  data: AdminCreateData
-) => {
+  data: AdminCreateData,
+}) => {
+  const { userPoolId, data } = params;
+
   return {
     UserPoolId: `${userPoolId}`,
     Username: `${data.userName}`,
     DesiredDeliveryMediums: ['EMAIL'],
-    UserAttributes: buildAttributes(data.attributes),
+    UserAttributes: buildAttributes({ values: data.attributes }),
   };
 };
 
-export const signUpConfig = (clientId: string, data: SignUpData): {} => {
+export const signUpConfig = (params: {
+  clientId: string,
+  data: SignUpData,
+}): {} => {
+  const { clientId, data } = params;
+
   return {
     ClientId: `${clientId}`,
     Username: `${data.userName}`,
     Password: `${data.password}`,
-    UserAttributes: buildAttributes(data.attributes),
+    UserAttributes: buildAttributes({ values: data.attributes }),
   };
 };
 
-const buildAttributes = (values: { [string]: string }): Array<UserAttribute> =>
+const buildAttributes = (params: {
+  values: { [string]: string },
+}): Array<UserAttribute> =>
   requiredAttributes().map(attribute => {
-    return { Name: attribute, Value: values[attribute] };
+    return { Name: attribute, Value: params.values[attribute] };
   });

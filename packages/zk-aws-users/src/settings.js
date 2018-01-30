@@ -34,14 +34,6 @@ export const Settings = {
     },
     PoolId: '',
   },
-  Master: {
-    Pool: {
-      customer: '',
-      project: '',
-    },
-    Password: '',
-    UserName: '',
-  },
   Policy: {
     Version: '2012-10-17',
   },
@@ -52,13 +44,10 @@ export const Settings = {
   },
 };
 
-export default config => {
+export default (params: { config: { [string]: string } }) => {
+  const { config } = params;
   Settings.AccessKey = config.AWS_ACCESS_KEY_ID;
   Settings.AccountId = config.AWS_ACCOUNT_ID;
-  Settings.Master.UserName = config.AWS_MASTER_USER;
-  Settings.Master.Password = config.AWS_MASTER_PASSWORD;
-  Settings.Master.Pool.customer = config.AWS_MASTER_POOL_CUSTOMER;
-  Settings.Master.Pool.project = config.AWS_MASTER_POOL_PROJECT;
   Settings.Identity.PoolId = config.AWS_IDENTITY_ID;
   Settings.Identity.Arn.Unauthorized = config.AWS_UNAUTH_ROLE_ARN;
   Settings.Identity.Arn.Authorized = config.AWS_AUTH_ROLE_ARN;

@@ -3,38 +3,30 @@
  * @date 2017-12-13
  */
 
-import {
-  clientName,
-  domainName,
-  poolName,
-  clientConfiguration,
-  poolConfiguration,
-} from './config';
-import { createClient, clientId } from './client';
+import { clientName, domainName, poolName } from './config';
+import { clientId, createClient } from './client';
 import { assignUserToGroup, createGroup } from './group';
 import {
-  createUserPool,
   createDomain,
+  createUserPool,
   deleteDomain,
   deleteUserPool,
-  userPoolId,
   listPools,
+  userPoolId,
 } from './userPool';
 
 export default {
-  clientName,
-  domainName,
-  poolName,
-  clientConfiguration,
-  poolConfiguration,
-  createClient,
-  clientId,
   assignUserToGroup,
+  clientId,
+  clientName,
+  createClient,
+  createDomain,
   createGroup,
   createUserPool,
-  createDomain,
   deleteDomain,
   deleteUserPool,
-  userPoolId,
+  domainName,
   listPools,
+  poolName,
+  userPoolId,
 };

@@ -18,5 +18,5 @@ export const TestParameters = {
   ProjectName: 'TestProject',
   SSN: '0001011111',
   UserGroup: 'UserGroup',
-  UserName: 'User'
-}
+  UserName: 'User',
+};

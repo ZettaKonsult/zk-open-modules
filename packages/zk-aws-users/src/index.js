@@ -3,20 +3,13 @@
 import Account from './account';
 import UserPool from './pool';
 
-import { addConfig, getCognito, getIAM, getAWS, updateConfigs } from './config';
-import Settings, { requiredAttributes, setIdentity } from './settings';
+import Settings, { requiredAttributes } from './settings';
 
-export default (config: { [string]: string }) => {
-  Settings(config);
+export default (params: { config: { [string]: string } }) => {
+  Settings(params);
   return {
     Account,
     UserPool,
-    addConfig,
-    getCognito,
-    getIAM,
-    getAWS,
-    updateConfigs,
     requiredAttributes,
-    setIdentity,
   };
 };

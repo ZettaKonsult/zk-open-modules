@@ -9,31 +9,38 @@ import { requiredAttributes } from '../settings';
 
 const SEP = Settings.Separator;
 
-export const clientName = (names: Pool): string =>
-  `${poolName(names)}${SEP}client`;
+export const clientName = (params: { names: Pool }): string =>
+  `${poolName(params)}${SEP}client`;
 
-export const domainName = (names: Pool) =>
-  `${poolName(names).toLowerCase()}${SEP}domain`;
+export const domainName = (params: { names: Pool }) =>
+  `${poolName(params).toLowerCase()}${SEP}domain`;
 
-export const poolName = (names: Pool): string =>
-  `${names.project}${SEP}${names.customer}`;
+export const poolName = (params: { names: Pool }): string =>
+  `${params.names.project}${SEP}${params.names.customer}`;
 
-export const clientConfiguration = (names: {
+export const clientConfiguration = (params: {
   client: string,
   pool: string,
 }): { UserPoolId: string, ClientName: string } => {
   return {
-    UserPoolId: `${names.pool}`,
-    ClientName: `${names.client}`,
+    UserPoolId: `${params.pool}`,
+    ClientName: `${params.client}`,
   };
 };
 
-export const groupConfiguration = (
+export const groupConfiguration = (params: {
   userPoolId: string,
   groupName: string,
   precedence: number,
-  description: string = ''
-) => {
+  description: string,
+}) => {
+  let { description } = params;
+  const { userPoolId, groupName, precedence } = params;
+
+  if (description == null) {
+    description = '';
+  }
+
   return {
     UserPoolId: `${userPoolId}`,
     GroupName: `${groupName}`,
@@ -42,11 +49,13 @@ export const groupConfiguration = (
   };
 };
 
-export const poolConfiguration = (
+export const poolConfiguration = (params: {
   poolId: string,
   name: string,
-  email: string
-) => {
+  email: string,
+}) => {
+  const { poolId, name, email } = params;
+
   return {
     PoolName: `${poolId}`,
     AdminCreateUserConfig: {
@@ -70,7 +79,11 @@ export const poolConfiguration = (
         MinimumLength: 14,
       },
     },
-    Schema: stringAttributes(true, true, requiredAttributes()),
+    Schema: stringAttributes({
+      mutable: true,
+      required: true,
+      names: requiredAttributes(),
+    }),
     VerificationMessageTemplate: {
       DefaultEmailOption: 'CONFIRM_WITH_LINK',
       EmailMessageByLink: `Please click the link below to verify your email address. {##Verify Email##}.`,
@@ -79,15 +92,15 @@ export const poolConfiguration = (
   };
 };
 
-const stringAttributes = (
+const stringAttributes = (params: {
   mutable: boolean,
   required: boolean,
-  names: Array<string>
-): Array<Attribute> =>
-  names.map((name: string) => {
+  names: Array<string>,
+}): Array<Attribute> =>
+  params.names.map((name: string) => {
     return {
-      Mutable: mutable,
-      Required: required,
+      Mutable: params.mutable,
+      Required: params.required,
       Name: name,
     };
   });

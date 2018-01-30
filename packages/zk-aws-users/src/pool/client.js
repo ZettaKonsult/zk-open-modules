@@ -10,15 +10,17 @@ import { userPoolId } from './userPool';
 import { clientConfiguration } from './config';
 import { getCognito } from '../config';
 
-export const createClient = async (names: Pool): Promise<string> => {
-  const pool = poolName(names);
-  const client = clientName(names);
+export const createClient = async (params: {
+  names: Pool,
+}): Promise<string> => {
+  const pool = poolName(params);
+  const client = clientName(params);
   console.log(`Creating application client ${client} for pool ${pool}.`);
 
   try {
-    const poolId = await userPoolId(names);
+    const poolId = await userPoolId(params);
 
-    if (await clientExists(names)) {
+    if (await clientExists(params)) {
       console.log(`Application client already exists.`);
       return '';
     }
@@ -40,15 +42,15 @@ export const createClient = async (names: Pool): Promise<string> => {
   }
 };
 
-export const clientExists = async (names: Pool): Promise<boolean> =>
-  (await clientId(names)) != null;
+export const clientExists = async (params: { names: Pool }): Promise<boolean> =>
+  (await clientId(params)) != null;
 
-export const clientId = async (names: Pool): Promise<string> => {
+export const clientId = async (params: { names: Pool }): Promise<string> => {
   try {
-    const client = clientName(names);
-    const poolId = await userPoolId(names);
+    const client = clientName(params);
+    const poolId = await userPoolId(params);
 
-    let clientId = (await listClients(poolId))[client];
+    let clientId = (await listClients({ userPoolId: poolId }))[client];
     return clientId;
   } catch (exception) {
     console.error(exception);
@@ -56,8 +58,11 @@ export const clientId = async (names: Pool): Promise<string> => {
   }
 };
 
-export const listClients = async (userPoolId: string): { [string]: string } => {
-  let params = {
+export const listClients = async (params: {
+  userPoolId: string,
+}): { [string]: string } => {
+  const { userPoolId } = params;
+  let awsParams = {
     UserPoolId: `${userPoolId}`,
     MaxResults: 50,
   };
@@ -68,7 +73,7 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
   do {
     try {
       result = (await (await getCognito())
-        .listUserPoolClients(params)
+        .listUserPoolClients(awsParams)
         .promise()).UserPoolClients;
     } catch (exception) {
       console.error(exception);
@@ -80,8 +85,8 @@ export const listClients = async (userPoolId: string): { [string]: string } => {
       return clients;
     }, {});
 
-    params = {
-      MaxResults: params.MaxResults,
+    awsParams = {
+      MaxResults: awsParams.MaxResults,
       NextToken: result.NextToken,
     };
   } while (result.nextToken);

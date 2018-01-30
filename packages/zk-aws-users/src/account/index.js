@@ -1,8 +1,8 @@
 /* @flow */
 
 import {
-  createAdminUser,
   createUser,
+  createAdminUser,
   signUp,
   signUpAdminUser,
 } from './account';
@@ -10,8 +10,6 @@ import {
   currentUser,
   loginUser,
   loginSetFirstPassword,
-  masterLogin,
-  masterSignOut,
   signOutUser,
   userToken,
 } from './session';
@@ -19,13 +17,11 @@ import {
 export default {
   createAdminUser,
   createUser,
-  signUp,
-  signUpAdminUser,
   currentUser,
   loginUser,
   loginSetFirstPassword,
-  masterLogin,
-  masterSignOut,
   signOutUser,
+  signUp,
+  signUpAdminUser,
   userToken,
 };

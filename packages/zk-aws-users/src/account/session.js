@@ -12,24 +12,9 @@ import {
   successfulLogin,
 } from './login';
 import { getAWS } from '../config';
-import { Settings } from '../settings';
 import UserPool from '../pool';
 import { userHandler } from './user';
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
-
-const AWS = getAWS();
-
-export const masterLogin = async () =>
-  await loginUser({
-    names: Settings.Master.Pool,
-    userName: Settings.Master.UserName,
-    password: Settings.Master.Password,
-  });
-
-export const masterSignOut = async () =>
-  await signOutUser({
-    names: Settings.Master.Pool,
-  });
 
 export const loginUser = async (params: {
   names: Pool,
@@ -70,7 +55,7 @@ const doLogin = async (params: {
   const { names, userName, password, login } = params;
 
   try {
-    const handler = await userHandler(names, userName, password);
+    const handler = await userHandler({ names, userName, password });
 
     const user = handler.user;
     let procedure = login(user);
@@ -89,28 +74,34 @@ const doLogin = async (params: {
 };
 
 export const signOutUser = async (params: { names: Pool }) => {
-  const { names } = params;
-  const user = await currentUser(names);
+  const user = await currentUser(params);
 
   if (user !== null) {
     user.signOut();
     console.log(`Signed out user ${user.username}.`);
   }
 
+  const AWS = getAWS();
   if (AWS.config.credentials) {
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({});
   }
 };
 
-export const currentUser = async (names: Pool): Promise<CognitoUser> => {
+export const currentUser = async (params: {
+  names: Pool,
+}): Promise<CognitoUser> => {
   const user = await new CognitoUserPool({
-    UserPoolId: await UserPool.userPoolId(names),
-    ClientId: await UserPool.clientId(names),
+    UserPoolId: await UserPool.userPoolId(params),
+    ClientId: await UserPool.clientId(params),
   }).getCurrentUser();
   return user;
 };
 
-export const userToken = async (currentUser: CognitoUser): Promise<string> => {
+export const userToken = async (params: {
+  currentUser: CognitoUser,
+}): Promise<string> => {
+  const { currentUser } = params;
+
   return await new Promise((resolve, reject) => {
     currentUser.getSession(function(error, session) {
       if (error) {

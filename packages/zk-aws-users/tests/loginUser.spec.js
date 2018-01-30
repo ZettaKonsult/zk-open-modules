@@ -9,7 +9,7 @@
 import Import from '../src';
 import { TestParameters } from './testUtil';
 
-const { Account } = Import(process.env);
+const { Account } = Import({ config: process.env });
 
 test('Logging in user.', async () => {
   const pool = {
@@ -17,8 +17,6 @@ test('Logging in user.', async () => {
     project: TestParameters.ProjectName,
   };
 
-  await Account.masterLogin();
-  await Account.masterSignOut();
   await Account.signOutUser({ names: pool });
 
   await Account.loginUser({

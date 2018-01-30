@@ -4,14 +4,16 @@
  * @date 2017-12-13
  */
 
-import { Account } from '../src'
-import { TestParameters } from './testUtil'
+import Import from '../src';
+import { TestParameters } from './testUtil';
+
+const { Account } = Import({ config: process.env });
 
 test('Confirm admin-created user.', async () => {
   await Account.loginSetFirstPassword({
     names: {
       project: TestParameters.ProjectName,
-      customer: TestParameters.CustomerName
+      customer: TestParameters.CustomerName,
     },
     userName: TestParameters.AdminUser,
     password: TestParameters.Password,
@@ -20,7 +22,7 @@ test('Confirm admin-created user.', async () => {
       given_name: TestParameters.GivenName,
       family_name: TestParameters.FamilyName,
       address: TestParameters.Address,
-      gender: TestParameters.Gender
-    }
-  })
-})
+      gender: TestParameters.Gender,
+    },
+  });
+});
