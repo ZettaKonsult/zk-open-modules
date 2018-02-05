@@ -46,7 +46,7 @@ the associated user pool will be called Proj-Cust.
 ### Account
 
     await Account.createAdminUser({
-      names: { customer: string, project: string },
+      pool: string,
       attributes: { [string]: string },
     })
 
@@ -54,7 +54,7 @@ Registers an administrator with the name and password as specified in `src/setti
 
     await Account.createUser({
       userName: string,
-      names: { customer: string, project: string },
+      pool: string,
       attributes: { [string]: string },
       password: string
     })
@@ -63,7 +63,7 @@ Creates a user with a temporary password.
 
     await Account.currentUser()             
     const { token, groups } = await Account.loginUser({
-      names: { customer: string, project: string },
+      pool: string,
       userName: string,
       password: string,
     })
@@ -71,7 +71,7 @@ Creates a user with a temporary password.
 Logins a user.
 
     const { token, groups } = await Account.loginSetFirstPassword({
-      names: { customer: string, project: string },
+      pool: string,
       userName: string,
       attributes: { [string]: string },
       password: string,
@@ -94,7 +94,7 @@ Analogous to `Account.createUser` but sends an e-mail verification link instead 
 ### User pool
 
     const userName = await UserPool.assignUserToGroup({
-      names: { project: string, customer: string },
+      pool: string,
       groupName: string,
       userName: string
     })
@@ -102,31 +102,31 @@ Analogous to `Account.createUser` but sends an e-mail verification link instead 
 Assigns a user to a group. Expects the group to exist.
 
     const clientId = await UserPool.clientId({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Retrieves the client id of a customer-project user pool.
 
     const clientName = UserPool.clientName({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Retrieves the client name of a customer-project user pool.
 
     const clientId = await UserPool.createClient({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Creates an application client for a customer-project user pool called `[customer]-[project]-client`.
 
     const domainName = await UserPool.createDomain({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Creates a domain for a customer-project user pool called `[customer]-[project]-domain`.
 
     const groupName = await UserPool.createGroup({
-      names: { project: string, customer: string },
+      pool: string,
       groupName: string,
       precedence: number = 0,
       description: string = ''
@@ -135,7 +135,7 @@ Creates a domain for a customer-project user pool called `[customer]-[project]-d
 Creates a group for a customer-project user pool.
 
     const { pool, client, domain, group, adminGroup, administrator } = await UserPool.createUserPool({
-      names: { project: string, customer: string },
+      pool: string,
       replyEmail: string,       // The EmailConfiguration.ReplyToEmailAddress for a user pool.
       adminAttributes: {} = {}  // Administrator attributes.
     })
@@ -143,19 +143,19 @@ Creates a group for a customer-project user pool.
 Creates a user-pool complete with a domain, application, adminstrator group and user.
 
     await UserPool.deleteDomain({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Deletes a user pool domain.
 
     await UserPool.deleteUserPool({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Deletes a user pool.
 
     const name = UserPool.domainName({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Retrieves the domain name of a customer-project user pool.
@@ -165,13 +165,13 @@ Retrieves the domain name of a customer-project user pool.
 Lists all the user pools for the AWS account.
 
     const name = UserPool.poolName({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Retrieves the pool name of a customer-project combination.
 
     const name = await UserPool.userPoolId({
-      names: { project: string, customer: string },
+      pool: string,
     })
 
 Retrieves the pool id of a cutomer-project combination.

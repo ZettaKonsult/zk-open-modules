@@ -6,13 +6,13 @@ import { adminCreateConfig, adminConfig, signUpConfig } from './config';
 import { getCognito } from '../config';
 
 export const createAdminUser = async (params: {
-  names: Pool,
+  pool: string,
   attributes: { [string]: string },
 }): Promise<string> => {
   const config = adminConfig();
 
   return await createUser({
-    names: params.names,
+    pool: params.pool,
     attributes: params.attributes,
     userName: config.userName,
     password: config.password,
@@ -20,17 +20,17 @@ export const createAdminUser = async (params: {
 };
 
 export const createUser = async (params: SignUpData): Promise<string> => {
-  const { userName, names } = params;
+  const { userName, pool } = params;
   console.log(`Admin-creating user ${userName}.`);
 
   try {
-    if (await userExists(names, userName)) {
+    if (await userExists(pool, userName)) {
       console.log(`User already exists.`);
       return userName;
     }
 
     const configuration = await adminCreateConfig(
-      await UserPool.userPoolId({ names: names }),
+      await UserPool.userPoolId({ pool }),
       params
     );
     let result = await getCognito()
@@ -47,13 +47,13 @@ export const createUser = async (params: SignUpData): Promise<string> => {
 };
 
 export const signUpAdminUser = async (params: {
-  names: Pool,
+  pool: string,
   attributes: { [string]: string },
 }): Promise<string> => {
   const config = adminConfig();
 
   return await signUp({
-    names: params.names,
+    pool: params.pool,
     userName: config.userName,
     password: config.password,
     attributes: params.attributes,
@@ -61,17 +61,17 @@ export const signUpAdminUser = async (params: {
 };
 
 export const signUp = async (params: SignUpData): Promise<string> => {
-  const { names, userName } = params;
+  const { pool, userName } = params;
   console.log(`Signing up user ${userName}.`);
 
   try {
-    if (await userExists({ names, userName })) {
+    if (await userExists({ pool, userName })) {
       console.log(`User already exists.`);
       return userName;
     }
 
     const configuration = await signUpConfig({
-      clientId: await UserPool.clientId({ names }),
+      clientId: await UserPool.clientId({ pool }),
       data: params,
     });
 
@@ -84,9 +84,9 @@ export const signUp = async (params: SignUpData): Promise<string> => {
   }
 };
 
-export const userExists = async (params: { names: Pool, userName: string }) => {
-  const { names, userName } = params;
-  const users = await listUsers({ names });
+export const userExists = async (params: { pool: string, userName: string }) => {
+  const { pool, userName } = params;
+  const users = await listUsers({ pool });
 
   return (
     users.enabled.indexOf(userName) > -1 ||
@@ -95,22 +95,22 @@ export const userExists = async (params: { names: Pool, userName: string }) => {
 };
 
 export const isDisabled = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
 }): boolean =>
-  params.userName in (await listUsers({ names: params.names }))[false];
+  params.userName in (await listUsers({ pool: params.pool }))[false];
 
 export const isEnabled = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
 }): Promise<{ enabled: Array<string>, disabled: Array<string> }> =>
-  params.userName in (await listUsers({ names: params.names }))[true];
+  params.userName in (await listUsers({ pool: params.pool }))[true];
 
 export const listUsers = async (params: {
-  names: Pool,
+  pool: string,
 }): { enabled: Array<string>, disabled: Array<string> } => {
   let awsParams = {
-    UserPoolId: `${await UserPool.userPoolId(params)}`,
+    UserPoolId: `${pool}`,
   };
 
   let disabled = [];

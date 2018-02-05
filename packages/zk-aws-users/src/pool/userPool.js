@@ -13,7 +13,7 @@ import { poolConfiguration } from './config';
 import { assignUserToGroup, createAdminGroup } from './group';
 
 export const createUserPool = async (params: {
-  names: Pool,
+  names: string,
   replyEmail: string,
   adminAttributes: { [string]: string },
 }): { [string]: Promise<string> } => {
@@ -22,17 +22,20 @@ export const createUserPool = async (params: {
   try {
     let result = {};
     result.pool = await createPool({ names, replyEmail });
-    result.client = await createClient(params);
-    result.domain = await createDomain(params);
-    result.adminGroup = await createAdminGroup(params);
+
+    const args = { ...params, pool: result.pool }
+
+    result.client = await createClient(args);
+    result.domain = await createDomain(args);
+    result.adminGroup = await createAdminGroup(args);
     result.administrator = await Account.signUpAdminUser({
-      names: names,
+      pool: pool,
       attributes: adminAttributes,
     });
     result.group = await assignUserToGroup({
-      names,
-      groupName: result.adminGroup,
-      userName: result.administrator,
+      pool,
+      group: result.adminGroup,
+      user: result.administrator,
     });
     return result;
   } catch (exception) {
@@ -42,9 +45,9 @@ export const createUserPool = async (params: {
 };
 
 export const createDomain = async (params: {
-  names: Pool,
+  pool: string
 }): Promise<string> => {
-  console.log(`Creating domain for ${poolName(params)}.`);
+  console.log(`Creating domain for ${pool}.`);
 
   try {
     const name = domainName(params);
@@ -52,7 +55,7 @@ export const createDomain = async (params: {
     await (await getCognito())
       .createUserPoolDomain({
         Domain: name,
-        UserPoolId: await userPoolId(params),
+        UserPoolId: pool,
       })
       .promise();
     console.log(`Successfully created domain ${name}.`);
@@ -62,7 +65,7 @@ export const createDomain = async (params: {
       return '';
     }
     console.error(exception);
-    return '';
+    throw exception;
   }
 };
 
@@ -75,7 +78,7 @@ const createPool = async (params: {
   const name = poolName({ names });
   console.log(`Creating user pool ${name}.`);
 
-  if (await userPoolExists({ names })) {
+  if (await userPoolExists({ pool })) {
     console.log(`Could not create pool ${name}, it already exists.`);
     return false;
   }
@@ -83,7 +86,7 @@ const createPool = async (params: {
   try {
     await (await getCognito())
       .createUserPool(
-        poolConfiguration({ poolId: name, name, email: replyEmail })
+        poolConfiguration({ pool, name, email: replyEmail })
       )
       .promise();
     console.log(`Successfully created user pool ${name}.`);
@@ -95,21 +98,14 @@ const createPool = async (params: {
 };
 
 export const deleteDomain = async (params: {
-  names: Pool,
+  pool: string,
 }): Promise<boolean> => {
   try {
     const name = domainName(params);
-    const id = await userPoolId(params);
-
-    if (id == null) {
-      console.log(`Could not delete domain ${name}, no pool exists.`);
-      return false;
-    }
-    console.log(`Domain ${name} belongs to user pool ${id}.`);
 
     const domainParams = {
       Domain: name,
-      UserPoolId: id,
+      UserPoolId: pool,
     };
 
     await (await getCognito()).deleteUserPoolDomain(domainParams).promise();
@@ -122,18 +118,12 @@ export const deleteDomain = async (params: {
 };
 
 export const deleteUserPool = async (params: {
-  names: Pool,
+  pool: string,
 }): Promise<boolean> => {
-  console.log(`Deleting user pool ${poolName(params)}`);
+  console.log(`Deleting user pool ${pool}`);
   try {
-    const id = await userPoolId(params);
-    if (id == null) {
-      console.log(`Pool did not exist.`);
-      return false;
-    }
-    console.log(`Using id ${id}.`);
     const awsParams = {
-      UserPoolId: id,
+      UserPoolId: params.pool,
     };
     await (await getCognito()).deleteUserPool(awsParams).promise();
     console.log(`Pool successfully deleted.`);
@@ -145,8 +135,8 @@ export const deleteUserPool = async (params: {
 };
 
 export const userPoolExists = async (params: {
-  names: Pool,
-}): Promise<boolean> => (await userPoolId(params)) != null;
+  pool: string,
+}): Promise<boolean> => params.pool in (await listPools());
 
 export const userPoolId = async (params: { names: Pool }): Promise<string> => {
   try {

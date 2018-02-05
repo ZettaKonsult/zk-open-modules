@@ -29,35 +29,35 @@ export const clientConfiguration = (params: {
 };
 
 export const groupConfiguration = (params: {
-  userPoolId: string,
-  groupName: string,
+  pool: string,
+  group: string,
   precedence: number,
   description: string,
 }) => {
   let { description } = params;
-  const { userPoolId, groupName, precedence } = params;
+  const { pool, group, precedence } = params;
 
   if (description == null) {
     description = '';
   }
 
   return {
-    UserPoolId: `${userPoolId}`,
-    GroupName: `${groupName}`,
+    UserPoolId: `${pool}`,
+    GroupName: `${group}`,
     Precedence: precedence,
     Description: `${description}`,
   };
 };
 
 export const poolConfiguration = (params: {
-  poolId: string,
+  pool: string,
   name: string,
   email: string,
 }) => {
   const { poolId, name, email } = params;
 
   return {
-    PoolName: `${poolId}`,
+    PoolName: `${pool}`,
     AdminCreateUserConfig: {
       AllowAdminCreateUserOnly: false,
       UnusedAccountValidityDays: 0,

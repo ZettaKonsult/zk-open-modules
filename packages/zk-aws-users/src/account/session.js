@@ -4,7 +4,7 @@
  * @date 2017-12-14
  */
 
-import type { LoginObjectFromUser, Pool, Session } from '../types';
+import type { LoginObjectFromUser, Session } from '../types';
 import {
   loginProcedure,
   loginSetFirstPasswordProcedure,
@@ -17,12 +17,12 @@ import { userHandler } from './user';
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 
 export const loginUser = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
   password: string,
 }) =>
   await doLogin({
-    names: params.names,
+    pool: params.pool,
     userName: params.userName,
     attributes: {},
     password: params.password,
@@ -30,14 +30,14 @@ export const loginUser = async (params: {
   });
 
 export const loginSetFirstPassword = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
   attributes: { [string]: string },
   password: string,
   newPassword: string,
 }) =>
   await doLogin({
-    names: params.names,
+    pool: params.pool,
     userName: params.userName,
     password: params.password,
     login: loginSetFirstPasswordProcedure({
@@ -47,15 +47,15 @@ export const loginSetFirstPassword = async (params: {
   });
 
 const doLogin = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
   password: string,
   login: LoginObjectFromUser,
 }): Promise<Session> => {
-  const { names, userName, password, login } = params;
+  const { pool, userName, password, login } = params;
 
   try {
-    const handler = await userHandler({ names, userName, password });
+    const handler = await userHandler({ pool, userName, password });
 
     const user = handler.user;
     let procedure = login(user);
@@ -73,7 +73,7 @@ const doLogin = async (params: {
   }
 };
 
-export const signOutUser = async (params: { names: Pool }) => {
+export const signOutUser = async (params: { pool: string }) => {
   const user = await currentUser(params);
 
   if (user !== null) {
@@ -88,13 +88,13 @@ export const signOutUser = async (params: { names: Pool }) => {
 };
 
 export const currentUser = async (params: {
-  names: Pool,
+  pool: string,
 }): Promise<CognitoUser> => {
-  const user = await new CognitoUserPool({
-    UserPoolId: await UserPool.userPoolId(params),
-    ClientId: await UserPool.clientId(params),
+  const { pool } = params;
+  return await new CognitoUserPool({
+    UserPoolId: pool,
+    ClientId: await UserPool.clientId({pool}),
   }).getCurrentUser();
-  return user;
 };
 
 export const userToken = async (params: {

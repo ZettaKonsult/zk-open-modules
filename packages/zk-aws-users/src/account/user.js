@@ -20,28 +20,28 @@ type UserHandler = {
 };
 
 export const userHandler = async (params: {
-  names: Pool,
+  pool: string,
   userName: string,
   password: string,
 }): Promise<UserHandler> => {
-  const { names, userName, password } = params;
+  const { pool, userName, password } = params;
   let handlerParams;
   try {
     handlerParams = {
-      UserPoolId: await userPoolId({ names }),
-      ClientId: await clientId({ names }),
+      UserPoolId: pool,
+      ClientId: await clientId({ pool }),
     };
   } catch (exception) {
     console.error(exception);
     throw exception;
   }
 
-  const pool = new CognitoUserPool(handlerParams);
+  const cognitoPool = new CognitoUserPool(handlerParams);
   return {
-    pool: pool,
+    pool: cognitoPool,
     user: new CognitoUser({
       Username: userName,
-      Pool: pool,
+      Pool: cognitoPool,
     }),
     details: new AuthenticationDetails({
       Username: userName,

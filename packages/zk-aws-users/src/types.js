@@ -13,7 +13,7 @@ export type Attribute = {
 export type Pool = {
   customer: string,
   project: string,
-};
+}
 
 export type Session = {
   token: string,
@@ -22,7 +22,7 @@ export type Session = {
 
 export type AdminCreateData = {
   userName: string,
-  names: Pool,
+  pool: string,
   attributes: { [string]: string },
 };
 

@@ -9,35 +9,33 @@ import { poolName } from './config';
 import { getCognito } from '../config';
 import { groupConfiguration } from './config';
 import { userPoolId } from './userPool';
+import { Settings } from '../Settings';
 
 export const createAdminGroup = async (params: {
-  names: {
-    project: string,
-    customer: string,
-  },
+  pool: string
 }) =>
   await createGroup({
-    names: params.names,
+    names: params.pool,
     groupName: 'Administrator',
     precedence: 0,
     description: 'Administrator group.',
   });
 
 export const assignUserToGroup = async (params: {
-  names: Pool,
-  groupName: string,
-  userName: string,
+  pool: string,
+  group: string,
+  user: string,
 }): Promise<string> => {
-  const { groupName, userName, names } = params;
+  const { group, user, pool } = params;
 
-  console.log(`Assigning user ${userName} to group ${groupName}.`);
+  console.log(`Assigning user ${user} to group ${group}.`);
 
   try {
     await (await getCognito())
       .adminAddUserToGroup({
-        GroupName: groupName,
-        UserPoolId: await userPoolId({ names }),
-        Username: userName,
+        GroupName: group,
+        UserPoolId: await userPoolId({ pool }),
+        Username: user,
       })
       .promise();
   } catch (exception) {
@@ -45,41 +43,36 @@ export const assignUserToGroup = async (params: {
     throw exception;
   }
 
-  console.log(`Successfully assigned user ${userName} to group ${groupName}.`);
+  console.log(`Successfully assigned user ${user} to group ${group}.`);
   return userName;
 };
 
 export const createGroup = async (params: {
-  names: {
-    project: string,
-    customer: string,
-  },
-  groupName: string,
+  pool: string,
+  group: string,
   precedence: number,
   description: string,
 }): Promise<string> => {
   let { precedence, description } = params;
-  const { names, groupName } = params;
+  const { pool, group } = params;
 
   description = description == null ? '' : description;
   precedence = precedence == null ? 0 : precedence;
 
-  const pool = poolName(params);
-  console.log(`Creating group ${groupName} for ${pool}`);
+  console.log(`Creating group ${group} for ${pool}`);
 
   let poolId;
   let name;
   try {
-    if (await groupExists({ names, groupName })) {
+    if (await groupExists({ pool, group })) {
       console.log(`Group already exists.`);
-      return groupName;
+      return group;
     }
-    poolId = await userPoolId(params);
 
     let result = await (await getCognito())
       .createGroup(
         groupConfiguration({
-          userPoolId: poolId,
+          pool,
           groupName,
           precedence,
           description,
@@ -87,7 +80,7 @@ export const createGroup = async (params: {
       )
       .promise();
     name = result.Group.GroupName;
-    console.log(`Successfully created group ${groupName} in pool ${poolId}.`);
+    console.log(`Successfully created group ${group} in pool ${pool}.`);
     return name;
   } catch (exception) {
     console.error(exception);
@@ -96,16 +89,16 @@ export const createGroup = async (params: {
 };
 
 export const groupExists = async (params: {
-  names: Pool,
-  groupName: string,
-}): boolean => (await listGroups(params)).indexOf(params.groupName) > -1;
+  pool: string,
+  group: string,
+}): boolean => (await listGroups(params)).indexOf(params.group) > -1;
 
 export const listGroups = async (params: {
-  names: Pool,
+  pool: string,
 }): { [string]: string } => {
   let awsParams = {
     Limit: 50,
-    UserPoolId: await userPoolId(params),
+    UserPoolId: pool,
   };
 
   let groups = [];
