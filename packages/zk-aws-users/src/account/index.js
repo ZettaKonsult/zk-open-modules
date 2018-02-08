@@ -1,27 +1,9 @@
 /* @flow */
 
-import {
-  createUser,
-  createAdminUser,
-  signUp,
-  signUpAdminUser,
-} from './account';
-import {
-  currentUser,
-  loginUser,
-  loginSetFirstPassword,
-  signOutUser,
-  userToken,
-} from './session';
+/**
+ * @date 2017-12-12
+ */
 
-export default {
-  createAdminUser,
-  createUser,
-  currentUser,
-  loginUser,
-  loginSetFirstPassword,
-  signOutUser,
-  signUp,
-  signUpAdminUser,
-  userToken,
-};
+import * as Account from './account';
+
+export default Account;

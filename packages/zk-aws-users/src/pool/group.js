@@ -4,24 +4,20 @@
  * @date 2017-12-12
  */
 
-import type { Pool } from '../types';
-import { poolName } from './config';
-import { getCognito } from '../config';
+import { getCognito, poolName } from '../config';
 import { groupConfiguration } from './config';
-import { userPoolId } from './userPool';
 import { Settings } from '../Settings';
+import * as Pool from './pool';
 
-export const createAdminGroup = async (params: {
-  pool: string
-}) =>
-  await createGroup({
-    names: params.pool,
-    groupName: 'Administrator',
-    precedence: 0,
-    description: 'Administrator group.',
+export const createAdmin = async (params: { pool: string }) =>
+  await create({
+    pool: params.pool,
+    group: Settings.Groups.Administrator.Name,
+    precedence: Settings.Groups.Administrator.Precedence,
+    description: Settings.Groups.Administrator.Description,
   });
 
-export const assignUserToGroup = async (params: {
+export const assignUser = async (params: {
   pool: string,
   group: string,
   user: string,
@@ -34,7 +30,7 @@ export const assignUserToGroup = async (params: {
     await (await getCognito())
       .adminAddUserToGroup({
         GroupName: group,
-        UserPoolId: await userPoolId({ pool }),
+        UserPoolId: pool,
         Username: user,
       })
       .promise();
@@ -44,10 +40,10 @@ export const assignUserToGroup = async (params: {
   }
 
   console.log(`Successfully assigned user ${user} to group ${group}.`);
-  return userName;
+  return user;
 };
 
-export const createGroup = async (params: {
+export const create = async (params: {
   pool: string,
   group: string,
   precedence: number,
@@ -59,13 +55,13 @@ export const createGroup = async (params: {
   description = description == null ? '' : description;
   precedence = precedence == null ? 0 : precedence;
 
-  console.log(`Creating group ${group} for ${pool}`);
+  console.log(`Creating group ${group} for pool ${pool}`);
 
   let poolId;
   let name;
   try {
-    if (await groupExists({ pool, group })) {
-      console.log(`Group already exists.`);
+    if (await exists({ pool, group })) {
+      console.log(`Group ${group} already exists.`);
       return group;
     }
 
@@ -73,7 +69,7 @@ export const createGroup = async (params: {
       .createGroup(
         groupConfiguration({
           pool,
-          groupName,
+          group,
           precedence,
           description,
         })
@@ -88,14 +84,14 @@ export const createGroup = async (params: {
   }
 };
 
-export const groupExists = async (params: {
+export const exists = async (params: {
   pool: string,
   group: string,
-}): boolean => (await listGroups(params)).indexOf(params.group) > -1;
+}): boolean => (await list(params)).indexOf(params.group) > -1;
 
-export const listGroups = async (params: {
-  pool: string,
-}): { [string]: string } => {
+export const list = async (params: { pool: string }): { [string]: string } => {
+  const { pool } = params;
+
   let awsParams = {
     Limit: 50,
     UserPoolId: pool,

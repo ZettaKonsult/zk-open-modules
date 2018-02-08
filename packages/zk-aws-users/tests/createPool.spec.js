@@ -7,10 +7,10 @@
 import Import from '../src';
 import { TestParameters } from './testUtil';
 
-const { UserPool } = Import({ config: process.env });
+const { Pool } = Import({ config: process.env });
 
 test('Creating pool.', async () => {
-  await UserPool.createUserPool({
+  await Pool.create({
     names: {
       customer: `${TestParameters.CustomerName}`,
       project: `${TestParameters.ProjectName}`,

@@ -12,9 +12,21 @@ type UserAttribute = {
   Value: string,
 };
 
+export const setPassword = async (params: {
+  user: CognitoUser,
+  password: string,
+  caller: LoginObject,
+  attributes: { [string]: string },
+}): PasswordChallengeCompleter => {
+  const { user, password, attributes, caller } = params;
+
+  await user.completeNewPasswordChallenge(password, attributes, caller);
+  console.log(`Set new password for ${user.username}.`);
+};
+
 export const adminConfig = () => {
   return {
-    userName: Settings.Groups.Administrator.Name,
+    name: Settings.Groups.Administrator.Name,
     password: Settings.Groups.Administrator.DefaultPassword,
   };
 };
@@ -33,23 +45,19 @@ export const adminCreateConfig = (params: {
   };
 };
 
-export const signUpConfig = (params: {
-  clientId: string,
-  data: SignUpData,
-}): {} => {
-  const { clientId, data } = params;
-
+export const signUpConfig = (params: SignUpData): {} => {
+  const { client, user, password, attributes } = params;
   return {
-    ClientId: `${clientId}`,
-    Username: `${data.userName}`,
-    Password: `${data.password}`,
-    UserAttributes: buildAttributes({ values: data.attributes }),
+    ClientId: `${client}`,
+    Username: `${user}`,
+    Password: `${password}`,
+    UserAttributes: buildAttributes({ attributes }),
   };
 };
 
 const buildAttributes = (params: {
-  values: { [string]: string },
+  attributes: { [string]: string },
 }): Array<UserAttribute> =>
   requiredAttributes().map(attribute => {
-    return { Name: attribute, Value: params.values[attribute] };
+    return { Name: attribute, Value: params.attributes[attribute] };
   });

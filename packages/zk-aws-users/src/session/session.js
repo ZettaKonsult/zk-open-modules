@@ -10,20 +10,21 @@ import {
   loginSetFirstPasswordProcedure,
   failedLogin,
   successfulLogin,
-} from './login';
-import { getAWS } from '../config';
-import UserPool from '../pool';
+} from './config';
 import { userHandler } from './user';
+import { getAWS } from '../config';
+import { passwordSetter } from '../account/account';
+import * as Client from '../pool/client';
 import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
 
-export const loginUser = async (params: {
+export const login = async (params: {
   pool: string,
-  userName: string,
+  user: string,
   password: string,
 }) =>
   await doLogin({
     pool: params.pool,
-    userName: params.userName,
+    user: params.user,
     attributes: {},
     password: params.password,
     login: loginProcedure,
@@ -31,14 +32,14 @@ export const loginUser = async (params: {
 
 export const loginSetFirstPassword = async (params: {
   pool: string,
-  userName: string,
+  user: string,
   attributes: { [string]: string },
   password: string,
   newPassword: string,
-}) =>
+}): Promise<{ [string]: string }> =>
   await doLogin({
     pool: params.pool,
-    userName: params.userName,
+    user: params.user,
     password: params.password,
     login: loginSetFirstPasswordProcedure({
       newPassword: params.newPassword,
@@ -48,17 +49,17 @@ export const loginSetFirstPassword = async (params: {
 
 const doLogin = async (params: {
   pool: string,
-  userName: string,
+  user: string,
   password: string,
   login: LoginObjectFromUser,
 }): Promise<Session> => {
-  const { pool, userName, password, login } = params;
+  const { pool, user, password, login } = params;
+
+  console.log(`Signing in user ${user} to pool ${pool}.`);
 
   try {
-    const handler = await userHandler({ pool, userName, password });
-
-    const user = handler.user;
-    let procedure = login(user);
+    const handler = await userHandler({ pool, user, password });
+    let procedure = login(handler.user);
 
     return await new Promise((resolve, reject) => {
       procedure.onSuccess = result => resolve(successfulLogin(result));
@@ -73,12 +74,12 @@ const doLogin = async (params: {
   }
 };
 
-export const signOutUser = async (params: { pool: string }) => {
-  const user = await currentUser(params);
+export const signOut = async (params: { pool: string }) => {
+  const userObject = await getUser(params);
 
-  if (user !== null) {
-    user.signOut();
-    console.log(`Signed out user ${user.username}.`);
+  if (userObject != null) {
+    userObject.signOut();
+    console.log(`Signed out user ${userObject.username}.`);
   }
 
   const AWS = getAWS();
@@ -87,23 +88,24 @@ export const signOutUser = async (params: { pool: string }) => {
   }
 };
 
-export const currentUser = async (params: {
+export const getUser = async (params: {
   pool: string,
 }): Promise<CognitoUser> => {
   const { pool } = params;
+
   return await new CognitoUserPool({
     UserPoolId: pool,
-    ClientId: await UserPool.clientId({pool}),
+    ClientId: (await Client.getFirst(params)).id,
   }).getCurrentUser();
 };
 
 export const userToken = async (params: {
-  currentUser: CognitoUser,
+  user: CognitoUser,
 }): Promise<string> => {
-  const { currentUser } = params;
+  const { user } = params;
 
   return await new Promise((resolve, reject) => {
-    currentUser.getSession(function(error, session) {
+    user.getSession(function(error, session) {
       if (error) {
         reject(error);
         return;

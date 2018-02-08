@@ -7,17 +7,6 @@ import type { Attribute, Pool } from '../types';
 import { Settings } from '../settings';
 import { requiredAttributes } from '../settings';
 
-const SEP = Settings.Separator;
-
-export const clientName = (params: { names: Pool }): string =>
-  `${poolName(params)}${SEP}client`;
-
-export const domainName = (params: { names: Pool }) =>
-  `${poolName(params).toLowerCase()}${SEP}domain`;
-
-export const poolName = (params: { names: Pool }): string =>
-  `${params.names.project}${SEP}${params.names.customer}`;
-
 export const clientConfiguration = (params: {
   client: string,
   pool: string,
@@ -54,7 +43,7 @@ export const poolConfiguration = (params: {
   name: string,
   email: string,
 }) => {
-  const { poolId, name, email } = params;
+  const { pool, name, email } = params;
 
   return {
     PoolName: `${pool}`,
@@ -79,7 +68,7 @@ export const poolConfiguration = (params: {
         MinimumLength: 14,
       },
     },
-    Schema: stringAttributes({
+    Schema: attributes({
       mutable: true,
       required: true,
       names: requiredAttributes(),
@@ -92,7 +81,7 @@ export const poolConfiguration = (params: {
   };
 };
 
-const stringAttributes = (params: {
+const attributes = (params: {
   mutable: boolean,
   required: boolean,
   names: Array<string>,

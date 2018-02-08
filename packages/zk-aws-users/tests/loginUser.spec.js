@@ -9,21 +9,19 @@
 import Import from '../src';
 import { TestParameters } from './testUtil';
 
-const { Account } = Import({ config: process.env });
+const { Pool, Session } = Import({ config: process.env });
 
 test('Logging in user.', async () => {
-  const pool = {
+  const pool = await Pool.getId({names: {
     customer: TestParameters.CustomerName,
     project: TestParameters.ProjectName,
-  };
+  }});
 
-  await Account.signOutUser({ names: pool });
-
-  await Account.loginUser({
-    names: pool,
-    userName: TestParameters.AdminUser,
+  await Session.login({
+    pool,
+    user: TestParameters.AdminUser,
     password: TestParameters.NewPassword,
   });
 
-  await Account.signOutUser({ names: pool });
+  await Session.signOut({ pool });
 });

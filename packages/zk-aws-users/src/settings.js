@@ -25,6 +25,8 @@ export const Settings = {
     Administrator: {
       Name: 'Administrator',
       DefaultPassword: 'DefaultPasswordForAdmin',
+      Description: 'Administrator group.',
+      Precedence: 0,
     },
   },
   Identity: {

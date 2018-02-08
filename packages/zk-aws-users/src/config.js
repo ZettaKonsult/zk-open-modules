@@ -6,6 +6,8 @@
 import AWS from 'aws-sdk';
 import { Settings } from './settings';
 
+const SEP = Settings.Separator;
+
 AWS.config.update({ region: Settings.Region });
 
 let cognito;
@@ -26,3 +28,12 @@ export const getCognito = (): CognitoIdentityServiceProvider => {
   }
   return cognito;
 };
+
+export const clientName = (params: { names: Pool }): string =>
+  `${poolName(params)}${SEP}client`;
+
+export const domainName = (params: { names: Pool }) =>
+  `${poolName(params).toLowerCase()}${SEP}domain`;
+
+export const poolName = (params: { names: Pool }): string =>
+  `${params.names.project}${SEP}${params.names.customer}`;

@@ -5,15 +5,15 @@
  */
 
 export type Attribute = {
-  Mutable: boolean,
-  Required: boolean,
-  Name: string,
+  mutable: boolean,
+  required: boolean,
+  name: string,
 };
 
 export type Pool = {
   customer: string,
   project: string,
-}
+};
 
 export type Session = {
   token: string,
@@ -21,18 +21,25 @@ export type Session = {
 };
 
 export type AdminCreateData = {
-  userName: string,
+  user: string,
   pool: string,
   attributes: { [string]: string },
 };
 
 export type SignUpData = AdminCreateData & {
   password: string,
+  client: string,
+};
+
+export type UserHandler = {
+  pool: Pool,
+  user: CognitoUser,
+  details: AuthenticationDetails,
 };
 
 export type PasswordChallengeCompleter = (
-  userAttributes: { [string]: string },
-  requiredAttributes: { [string]: string }
+  attributes: { [string]: string },
+  required: { [string]: string }
 ) => void;
 
 export type LoginObject = {

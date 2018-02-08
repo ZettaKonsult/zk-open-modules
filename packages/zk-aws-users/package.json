@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "amazon-cognito-identity-js": "^1.28.0",
-    "aws-sdk": "^2.166.0"
+    "aws-sdk": "^2.166.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0"
   }
 }

@@ -10,9 +10,23 @@ import type {
   PasswordChallengeCompleter,
   Session,
 } from '../types';
-import { CognitoUser } from 'amazon-cognito-identity-js';
 
-export const setNewPassword = (params: {
+export const loginSetFirstPasswordProcedure = (params: {
+  newPassword: string,
+  attributes: { [string]: string },
+}): LoginObjectFromUser => {
+  return user => {
+    procedure.newPasswordRequired = passwordChallengeCompleter({
+      user: user,
+      password: params.newPassword,
+      caller: loginProcedure(),
+      attributes: params.attributes,
+    });
+    return procedure;
+  };
+};
+
+const passwordChallengeCompleter = (params: {
   user: CognitoUser,
   password: string,
   caller: LoginObject,
@@ -22,22 +36,6 @@ export const setNewPassword = (params: {
 
   await user.completeNewPasswordChallenge(password, attributes, caller);
   console.log(`Set new password for ${user.username}.`);
-};
-
-export const loginSetFirstPasswordProcedure = (params: {
-  newPassword: string,
-  attributes: { [string]: string },
-}): LoginObjectFromUser => {
-  let procedure = loginProcedure();
-  return user => {
-    procedure.newPasswordRequired = setNewPassword({
-      user: user,
-      password: params.newPassword,
-      caller: procedure,
-      attributes: params.attributes,
-    });
-    return procedure;
-  };
 };
 
 export const successfulLogin = (result: Object): Session => {

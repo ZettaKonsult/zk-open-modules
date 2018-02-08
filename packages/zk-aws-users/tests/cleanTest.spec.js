@@ -7,7 +7,7 @@
 import Import from '../src';
 import { TestParameters } from './testUtil';
 
-const { UserPool } = Import({ config: process.env });
+const { Domain, Pool } = Import({ config: process.env });
 
 test('Cleaning up after tests...', async () => {
   const names = {
@@ -15,6 +15,9 @@ test('Cleaning up after tests...', async () => {
     project: TestParameters.ProjectName,
   };
 
-  await UserPool.deleteDomain({ names });
-  await UserPool.deleteUserPool({ names });
+  const pool = await Pool.getId({ names });
+  const domain = await Domain.get({ pool });
+
+  await Domain.remove({ pool, domain });
+  await Pool.remove({ pool });
 });

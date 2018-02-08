@@ -4,27 +4,23 @@
  * @date 2017-12-12
  */
 
-import { clientName, poolName } from './config';
-import { userPoolId } from './userPool';
+import { clientName, poolName } from '../config';
 import { clientConfiguration } from './config';
 import { getCognito } from '../config';
 
-export const createClient = async (params: {
-  pool: string,
-}): Promise<string> => {
+export const create = async (params: { pool: string }): Promise<string> => {
+  const { pool } = params;
   const client = clientName(params);
-  console.log(`Creating application client ${name} for pool ${pool}.`);
+  console.log(`Creating application client ${client} for pool ${pool}.`);
 
   try {
-    if (await clientExists(params)) {
+    if (await exists(params)) {
       console.log(`Application client already exists.`);
       return '';
     }
 
     const result = await (await getCognito())
-      .createUserPoolClient(
-        clientConfiguration({ client, pool })
-      )
+      .createUserPoolClient(clientConfiguration({ client, pool }))
       .promise();
     const id = result.UserPoolClient.ClientId;
 
@@ -38,14 +34,15 @@ export const createClient = async (params: {
   }
 };
 
-export const clientExists = async (params: { pool: string }): Promise<boolean> =>
+export const exists = async (params: { pool: string }): Promise<boolean> =>
   (await clientId(params)) != null;
 
 export const clientId = async (params: { pool: string }): Promise<string> => {
+  const { pool } = params;
   try {
     const client = clientName(params);
 
-    let clientId = (await listClients({ userPoolId: pool }))[client];
+    let clientId = (await list({ pool }))[client];
     return clientId;
   } catch (exception) {
     console.error(exception);
@@ -53,9 +50,20 @@ export const clientId = async (params: { pool: string }): Promise<string> => {
   }
 };
 
-export const listClients = async (params: {
+export const getFirst = async (params: {
   pool: string,
-}): { [string]: string } => {
+}): Promise<{ name: string, id: string }> => {
+  try {
+    const clients = await list(params);
+    const name = Object.keys(clients)[0];
+    return { name, id: clients[name] };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const list = async (params: { pool: string }): { [string]: string } => {
   const { pool } = params;
   let awsParams = {
     UserPoolId: `${pool}`,
