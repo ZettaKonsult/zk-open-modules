@@ -8,10 +8,15 @@ import { get } from './get';
 import { create } from './create';
 import { remove } from './delete';
 
-export default (params: { region: string, auth: () => any }) => {
-  const { region, auth } = params;
+let dynamoDb;
 
-  AWS.config.update({ region });
+export default (params: {
+  dynamoDb: AWS.DynamoDB.DocumentClient,
+  auth: () => any,
+}) => {
+  dynamoDb = params.dynamoDb;
+  const { auth } = params;
+
   return {
     beforeEach: async function(): any {
       return await auth();
@@ -60,7 +65,7 @@ export default (params: { region: string, auth: () => any }) => {
   };
 };
 
-export function call(action: string, params: { [string]: any }) {
-  const dynamoDb = new AWS.DynamoDB.DocumentClient();
-  return dynamoDb[action](params).promise();
-}
+export const call = async (params: {
+  action: string,
+  args: { [string]: string },
+}) => await dynamoDb[params.action](params.args).promise();
